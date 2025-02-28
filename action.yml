@@ -1,23 +1,23 @@
-name: The name of your action here
-description: Provide a description here
-author: Your name or organization here
+name: Mutation Test
+description: Automatically runs mutation tests on your codebase and ensures the mutation score meets quality standards.
+author: Eduardo Menoncello
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: heart
-  color: red
+  icon: 'shield'
+  color: 'green'
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: Your input description here
-    required: true
-    default: '1000'
+  node-version:
+    description: Version of Node.js to use for running the mutation tests
+    required: false
+    default: '20'
 
 # Define your outputs here.
 outputs:
-  time:
-    description: Your output description here
+  mutation_metrics:
+    description: JSON object containing detailed mutation test metrics including score, killed/survived mutants, and test coverage
 
 runs:
   using: node20

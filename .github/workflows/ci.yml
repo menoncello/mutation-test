@@ -44,6 +44,10 @@ jobs:
         id: npm-ci-test
         run: npm run ci-test
 
+      - name: Test
+        id: npm-mutation-test
+        run: npm run test:mutation
+
   test-action:
     name: GitHub Actions Test
     runs-on: ubuntu-latest
@@ -57,8 +61,8 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          node-version: '20'
 
       - name: Print Output
         id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+        run: echo "${{ steps.test-action.outputs.mutation_metrics }}"

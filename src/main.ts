@@ -1,27 +1,24 @@
 import * as core from '@actions/core'
-import { wait } from './wait.js'
+import { exec } from '@actions/exec'
+import { MutationService } from './services/mutation-service'
+import { MutationRunner } from './runners/mutation-runner'
 
-/**
- * The main function for the action.
- *
- * @returns Resolves when the action is complete.
- */
-export async function run(): Promise<void> {
+async function setupNodeVersion(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
-
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    const nodeVersion = core.getInput('node-version') || '20'
+    // Use volta to switch Node.js version
+    await exec('volta install node@' + nodeVersion)
+    await exec('volta run node --version')
   } catch (error) {
-    // Fail the workflow run if an error occurs
-    if (error instanceof Error) core.setFailed(error.message)
+    core.warning(
+      `Failed to set Node.js version: ${error}. Continuing with current version.`
+    )
   }
+}
+
+export async function run(): Promise<void> {
+  await setupNodeVersion()
+  const mutationService = new MutationService()
+  const mutationRunner = new MutationRunner(mutationService)
+  await mutationRunner.run()
 }

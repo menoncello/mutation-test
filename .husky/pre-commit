@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Get staged files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(js|jsx|ts|tsx)$' | tr '\n' ' ')
+
+if [ -z "$STAGED_FILES" ]; then
+  echo "No JavaScript or TypeScript files to check"
+  exit 0
+fi
+
+# Run lint only on staged files
+echo "Running ESLint on staged files..."
+npx eslint $STAGED_FILES || exit 1
+
+# Run prettier only on staged files
+echo "Running Prettier check on staged files..."
+npx prettier --check $STAGED_FILES || exit 1
+
+# Run tests (keeping this as is since tests should run on the whole codebase)
+npm test

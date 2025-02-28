@@ -1,0 +1,14 @@
+{
+  "input": "src/main.ts",
+  "output": {
+    "file": "dist/index.js",
+    "format": "es",
+    "sourcemap": true
+  },
+  "plugins": [
+    "@rollup/plugin-typescript",
+    "@rollup/plugin-node-resolve",
+    "@rollup/plugin-commonjs"
+  ],
+  "external": ["@actions/core", "fs-extra"]
+}
