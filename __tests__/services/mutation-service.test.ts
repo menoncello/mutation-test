@@ -1,6 +1,6 @@
+import { execSync } from 'child_process'
 import * as core from '@actions/core'
 import * as fs from 'fs-extra'
-import { execSync } from 'child_process'
 import { MutationService } from '../../src/services/mutation-service'
 import { MutationMetrics } from '../../src/types/mutation'
 

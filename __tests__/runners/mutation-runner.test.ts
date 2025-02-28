@@ -1,5 +1,5 @@
-import * as core from '@actions/core'
 import { execSync } from 'child_process'
+import * as core from '@actions/core'
 import { MutationRunner } from '../../src/runners/mutation-runner'
 import { MutationService } from '../../src/services/mutation-service'
 import { MutationMetrics } from '../../src/types/mutation'
