@@ -6,9 +6,5 @@
     "noEmit": true
   },
   "exclude": ["dist", "node_modules", ".stryker-tmp"],
-  "include": [
-    "__fixtures__",
-    "__tests__",
-    "src"
-  ]
+  "include": ["__fixtures__", "__tests__", "src"]
 }

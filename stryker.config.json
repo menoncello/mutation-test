@@ -7,13 +7,7 @@
   "typescriptChecker": {
     "prioritizePerformanceOverAccuracy": true
   },
-  "reporters": [
-    "html",
-    "json",
-    "clear-text",
-    "progress",
-    "dashboard"
-  ],
+  "reporters": ["html", "json", "clear-text", "progress", "dashboard"],
   "clearTextReporter": {
     "logTests": true,
     "reportMutants": true,
@@ -41,13 +35,10 @@
   },
   "testRunner_comment": "Take a look at https://stryker-mutator.io/docs/stryker-js/jest-runner for information about the jest plugin.",
   "coverageAnalysis": "perTest",
-  "mutate": [
-    "src/**/*.ts"
-  ],
+  "mutate": ["src/**/*.ts"],
   "tempDirName": "stryker-tmp",
   "plugins": [
     "@stryker-mutator/jest-runner",
     "@stryker-mutator/typescript-checker"
   ]
-
 }
