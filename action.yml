@@ -1,5 +1,7 @@
 name: Mutation Test
-description: Automatically runs mutation tests on your codebase and ensures the mutation score meets quality standards.
+description:
+  Automatically runs mutation tests on your codebase and ensures the mutation
+  score meets quality standards.
 author: Eduardo Menoncello
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
@@ -17,7 +19,9 @@ inputs:
 # Define your outputs here.
 outputs:
   mutation_metrics:
-    description: JSON object containing detailed mutation test metrics including score, killed/survived mutants, and test coverage
+    description:
+      JSON object containing detailed mutation test metrics including score,
+      killed/survived mutants, and test coverage
 
 runs:
   using: node20
