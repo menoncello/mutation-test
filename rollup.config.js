@@ -20,6 +20,6 @@ export default {
       tsconfig: './tsconfig.json'
     }),
     json()
-  ],
-  external: ['@actions/core', '@actions/exec', 'fs-extra']
+  ]
+  // Removed external dependencies to include them in the bundle
 }
