@@ -1,7 +1,28 @@
-import * as core from '@actions/core';
-import { exec } from '@actions/exec';
-import fs from 'fs-extra';
-import { execSync } from 'child_process';
+'use strict';
+
+var core = require('@actions/core');
+var exec = require('@actions/exec');
+var fs = require('fs-extra');
+var child_process = require('child_process');
+
+function _interopNamespaceDefault(e) {
+    var n = Object.create(null);
+    if (e) {
+        Object.keys(e).forEach(function (k) {
+            if (k !== 'default') {
+                var d = Object.getOwnPropertyDescriptor(e, k);
+                Object.defineProperty(n, k, d.get ? d : {
+                    enumerable: true,
+                    get: function () { return e[k]; }
+                });
+            }
+        });
+    }
+    n.default = e;
+    return Object.freeze(n);
+}
+
+var core__namespace = /*#__PURE__*/_interopNamespaceDefault(core);
 
 class MutationService {
     metricsFile = 'mutation-metrics.json';
@@ -15,12 +36,12 @@ class MutationService {
         }
         catch (error) {
             const errorMessage = error.message;
-            core.warning(`Could not read previous mutation metrics. Using default baseline. ${errorMessage}`);
+            core__namespace.warning(`Could not read previous mutation metrics. Using default baseline. ${errorMessage}`);
             return this.getDefaultMetrics();
         }
     }
     async getMutationMetrics() {
-        const output = execSync('npm run get:mutation-metrics --silent').toString();
+        const output = child_process.execSync('npm run get:mutation-metrics --silent').toString();
         const metrics = JSON.parse(output);
         return {
             ...metrics,
@@ -57,20 +78,20 @@ class MutationRunner {
             throw new Error('Invalid score value in metrics');
         }
         if (metrics.score > 100) {
-            core.warning('Unusually high mutation score detected');
+            core__namespace.warning('Unusually high mutation score detected');
         }
     }
     logDetailedMetrics(metrics) {
-        core.info('Detailed metrics:');
-        core.info(`- Total mutants: ${metrics.mutants.total}`);
-        core.info(`- Killed: ${metrics.killed}`);
-        core.info(`- Survived: ${metrics.survived}`);
-        core.info(`- Timeout: ${metrics.timeout}`);
-        core.info(`- No Coverage: ${metrics.noCoverage}`);
+        core__namespace.info('Detailed metrics:');
+        core__namespace.info(`- Total mutants: ${metrics.mutants.total}`);
+        core__namespace.info(`- Killed: ${metrics.killed}`);
+        core__namespace.info(`- Survived: ${metrics.survived}`);
+        core__namespace.info(`- Timeout: ${metrics.timeout}`);
+        core__namespace.info(`- No Coverage: ${metrics.noCoverage}`);
         if (metrics.mutants.mutated.length) {
-            core.debug('Mutated files:');
+            core__namespace.debug('Mutated files:');
             metrics.mutants.mutated.forEach((file) => {
-                core.debug(`  - ${file}`);
+                core__namespace.debug(`  - ${file}`);
             });
         }
     }
@@ -80,17 +101,17 @@ class MutationRunner {
         }
         const improvement = newScore - oldScore;
         if (improvement > 10) {
-            core.info(`Significant improvement in mutation score: +${improvement.toFixed(2)} points!`);
+            core__namespace.info(`Significant improvement in mutation score: +${improvement.toFixed(2)} points!`);
         }
     }
     runMutationTests() {
-        core.info('Running mutation tests...');
+        core__namespace.info('Running mutation tests...');
         try {
-            execSync('npm run test:mutation', { stdio: 'inherit' });
+            child_process.execSync('npm run test:mutation', { stdio: 'inherit' });
         }
         catch (error) {
             const errorMsg = `Test execution failed: ${error instanceof Error ? error.message : 'unknown error'}`;
-            core.setFailed(errorMsg);
+            core__namespace.setFailed(errorMsg);
             throw new Error(errorMsg);
         }
     }
@@ -106,17 +127,17 @@ class MutationRunner {
         try {
             const oldMetrics = await this.mutationService.readMutationMetrics();
             this.validateMetrics(oldMetrics);
-            core.info(`Old mutation score: ${oldMetrics.score}`);
+            core__namespace.info(`Old mutation score: ${oldMetrics.score}`);
             this.runMutationTests();
             const newMetrics = await this.mutationService.getMutationMetrics();
             this.validateMetrics(newMetrics);
-            core.info(`New mutation score: ${newMetrics.score}`);
+            core__namespace.info(`New mutation score: ${newMetrics.score}`);
             this.compareScores(oldMetrics.score, newMetrics.score);
             this.logDetailedMetrics(newMetrics);
             await this.saveMetrics(newMetrics);
         }
         catch (error) {
-            core.setFailed(error.message);
+            core__namespace.setFailed(error.message);
             throw error;
         }
     }
@@ -124,13 +145,13 @@ class MutationRunner {
 
 async function setupNodeVersion() {
     try {
-        const nodeVersion = core.getInput('node-version') || '20';
+        const nodeVersion = core__namespace.getInput('node-version') || '20';
         // Use volta to switch Node.js version
-        await exec('volta install node@' + nodeVersion);
-        await exec('volta run node --version');
+        await exec.exec('volta install node@' + nodeVersion);
+        await exec.exec('volta run node --version');
     }
     catch (error) {
-        core.warning(`Failed to set Node.js version: ${error}. Continuing with current version.`);
+        core__namespace.warning(`Failed to set Node.js version: ${error}. Continuing with current version.`);
     }
 }
 async function run() {
@@ -149,5 +170,5 @@ if (process.env.GITHUB_ACTIONS) {
     run();
 }
 
-export { run };
+exports.run = run;
 //# sourceMappingURL=index.js.map
