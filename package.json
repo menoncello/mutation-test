@@ -3,7 +3,6 @@
   "description": "GitHub Action to check mutation testing metrics",
   "version": "0.0.0",
   "author": "",
-  "type": "module",
   "private": true,
   "homepage": "https://github.com/actions/typescript-action",
   "repository": {
