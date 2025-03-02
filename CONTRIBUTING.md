@@ -1,142 +1,142 @@
-# Contribuindo para o Mutation Test Action
+# Contributing to Mutation Test Action
 
-Obrigado pelo seu interesse em contribuir para o Mutation Test Action! Este documento fornece informações detalhadas sobre como o projeto está estruturado e como você pode contribuir efetivamente.
+Thank you for your interest in contributing to the Mutation Test Action! This document provides detailed information about how the project is structured and how you can contribute effectively.
 
-## Arquitetura do Projeto
+## Project Architecture
 
-O Mutation Test Action é uma GitHub Action baseada em Node.js que executa testes de mutação em projetos e fornece métricas detalhadas sobre a qualidade dos testes.
+The Mutation Test Action is a Node.js-based GitHub Action that runs mutation tests on projects and provides detailed metrics about test quality.
 
-### Estrutura de Diretórios
+### Directory Structure
 
 ```
 mutation-test/
-├── .github/             # Configurações do GitHub e workflows
-├── __tests__/           # Testes unitários
-├── dist/                # Código compilado (gerado)
-├── src/                 # Código fonte
-│   ├── runners/         # Implementações de runners
-│   ├── services/        # Serviços de negócio
-│   ├── index.ts         # Ponto de entrada
-│   └── main.ts          # Lógica principal
-├── action.yml           # Definição da GitHub Action
-├── package.json         # Dependências e scripts
-└── rollup.config.js     # Configuração de empacotamento
+├── .github/             # GitHub configurations and workflows
+├── __tests__/           # Unit tests
+├── dist/                # Compiled code (generated)
+├── src/                 # Source code
+│   ├── runners/         # Runner implementations
+│   ├── services/        # Business services
+│   ├── index.ts         # Entry point
+│   └── main.ts          # Main logic
+├── action.yml           # GitHub Action definition
+├── package.json         # Dependencies and scripts
+└── rollup.config.js     # Packaging configuration
 ```
 
-### Fluxo de Execução
+### Execution Flow
 
-1. O ponto de entrada da action é o arquivo `src/index.ts`, que importa e executa a função `run()` do arquivo `src/main.ts`.
-2. A função `run()` configura a versão do Node.js e inicializa os serviços necessários.
-3. O `MutationService` é responsável por executar o Stryker Mutator e analisar os resultados.
-4. O `MutationRunner` coordena a execução dos testes de mutação e processa os resultados.
-5. Os resultados são formatados e disponibilizados como saída da action.
+1. The entry point of the action is the `src/index.ts` file, which imports and executes the `run()` function from the `src/main.ts` file.
+2. The `run()` function configures the Node.js version and initializes the necessary services.
+3. The `MutationService` is responsible for running the Stryker Mutator and analyzing the results.
+4. The `MutationRunner` coordinates the execution of mutation tests and processes the results.
+5. The results are formatted and made available as action output.
 
-## Desenvolvimento Local
+## Local Development
 
-### Configuração do Ambiente
+### Environment Setup
 
-1. Clone o repositório:
+1. Clone the repository:
    ```bash
    git clone https://github.com/menoncello/mutation-test.git
    cd mutation-test
    ```
 
-2. Instale as dependências:
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-3. Compile o código:
+3. Compile the code:
    ```bash
    npm run package
    ```
 
-### Executando Testes
+### Running Tests
 
 ```bash
 npm run test
 ```
 
-Para executar os testes de mutação no próprio projeto:
+To run mutation tests on the project itself:
 
 ```bash
 npm run test:mutation
 ```
 
-### Testando a Action Localmente
+### Testing the Action Locally
 
-Você pode testar a action localmente usando a ferramenta `@github/local-action`:
+You can test the action locally using the `@github/local-action` tool:
 
 ```bash
 npm run local-action
 ```
 
-## Diretrizes de Contribuição
+## Contribution Guidelines
 
-### Fluxo de Trabalho Git
+### Git Workflow
 
-1. Faça um fork do repositório
-2. Clone seu fork: `git clone https://github.com/SEU-USUARIO/mutation-test.git`
-3. Crie uma branch para sua feature: `git checkout -b feature/nome-da-feature`
-4. Faça suas alterações
-5. Execute os testes: `npm run test`
-6. Verifique o estilo de código: `npm run lint`
-7. Formate o código: `npm run format:write`
-8. Commit suas alterações: `git commit -m "feat: adiciona nova funcionalidade"`
-9. Push para o seu fork: `git push origin feature/nome-da-feature`
-10. Abra um Pull Request
+1. Fork the repository
+2. Clone your fork: `git clone https://github.com/YOUR-USERNAME/mutation-test.git`
+3. Create a branch for your feature: `git checkout -b feature/feature-name`
+4. Make your changes
+5. Run tests: `npm run test`
+6. Check code style: `npm run lint`
+7. Format code: `npm run format:write`
+8. Commit your changes: `git commit -m "feat: add new functionality"`
+9. Push to your fork: `git push origin feature/feature-name`
+10. Open a Pull Request
 
-### Convenções de Commit
+### Commit Conventions
 
-Este projeto segue as [Conventional Commits](https://www.conventionalcommits.org/):
+This project follows [Conventional Commits](https://www.conventionalcommits.org/):
 
-- `feat`: Nova funcionalidade
-- `fix`: Correção de bug
-- `docs`: Alterações na documentação
-- `style`: Alterações que não afetam o significado do código (espaços em branco, formatação, etc.)
-- `refactor`: Alteração de código que não corrige um bug nem adiciona uma funcionalidade
-- `perf`: Alteração de código que melhora o desempenho
-- `test`: Adição ou correção de testes
-- `build`: Alterações que afetam o sistema de build ou dependências externas
-- `ci`: Alterações nos arquivos de configuração de CI
-- `chore`: Outras alterações que não modificam arquivos de src ou test
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Changes that do not affect the meaning of the code (whitespace, formatting, etc.)
+- `refactor`: Code change that neither fixes a bug nor adds a feature
+- `perf`: Code change that improves performance
+- `test`: Adding or correcting tests
+- `build`: Changes that affect the build system or external dependencies
+- `ci`: Changes to CI configuration files
+- `chore`: Other changes that don't modify src or test files
 
-### Padrões de Código
+### Code Standards
 
-- Use TypeScript para todo o código
-- Mantenha 100% de cobertura de testes
-- Siga o estilo de código definido pelo ESLint e Prettier
-- Documente todas as funções e classes públicas
+- Use TypeScript for all code
+- Maintain 100% test coverage
+- Follow the code style defined by ESLint and Prettier
+- Document all public functions and classes
 
-## Detalhes Técnicos
+## Technical Details
 
-### Dependências Principais
+### Main Dependencies
 
-- `@actions/core`: API principal do GitHub Actions
-- `@actions/exec`: Execução de comandos shell
-- `@stryker-mutator/typescript-checker`: Verificador de tipos TypeScript para o Stryker
-- `fs-extra`: Utilitários de sistema de arquivos
+- `@actions/core`: GitHub Actions core API
+- `@actions/exec`: Shell command execution
+- `@stryker-mutator/typescript-checker`: TypeScript type checker for Stryker
+- `fs-extra`: File system utilities
 
-### Empacotamento
+### Packaging
 
-O projeto usa Rollup para empacotar o código TypeScript em um único arquivo JavaScript que pode ser executado pelo GitHub Actions. A configuração está definida em `rollup.config.js`.
+The project uses Rollup to package TypeScript code into a single JavaScript file that can be executed by GitHub Actions. The configuration is defined in `rollup.config.js`.
 
-### Testes
+### Tests
 
-Os testes são escritos usando Jest e estão localizados no diretório `__tests__/`. A configuração do Jest está definida no arquivo `jest.config.js`.
+Tests are written using Jest and are located in the `__tests__/` directory. The Jest configuration is defined in the `jest.config.js` file.
 
-## Resolução de Problemas
+## Troubleshooting
 
-### Erros Comuns
+### Common Errors
 
-1. **ERR_MODULE_NOT_FOUND**: Certifique-se de que todas as dependências necessárias estejam listadas corretamente em `dependencies` no `package.json` e que os módulos externos estejam configurados corretamente em `rollup.config.js`.
+1. **ERR_MODULE_NOT_FOUND**: Make sure all necessary dependencies are correctly listed in `dependencies` in `package.json` and that external modules are properly configured in `rollup.config.js`.
 
-2. **Falhas nos Testes**: Verifique se você está usando a versão correta do Node.js (20+) e se todas as dependências estão instaladas.
+2. **Test Failures**: Check if you are using the correct version of Node.js (20+) and if all dependencies are installed.
 
-3. **Problemas de Empacotamento**: Se o empacotamento falhar, verifique a configuração do Rollup e certifique-se de que todos os imports estão corretos.
+3. **Packaging Issues**: If packaging fails, check the Rollup configuration and make sure all imports are correct.
 
-## Recursos Adicionais
+## Additional Resources
 
-- [Documentação do GitHub Actions](https://docs.github.com/en/actions)
-- [Documentação do Stryker Mutator](https://stryker-mutator.io/docs/stryker-js/introduction/)
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [Stryker Mutator Documentation](https://stryker-mutator.io/docs/stryker-js/introduction/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)

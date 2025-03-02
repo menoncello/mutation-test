@@ -2,35 +2,35 @@
 
 [![Continuous Integration](https://github.com/menoncello/mutation-test/actions/workflows/ci.yml/badge.svg)](https://github.com/menoncello/mutation-test/actions/workflows/ci.yml)
 
-Uma GitHub Action que executa testes de mutação no seu código e garante que a pontuação de mutação atenda aos padrões de qualidade definidos.
+A GitHub Action that runs mutation tests on your code and ensures that the mutation score meets defined quality standards.
 
-## Documentação
+## Documentation
 
-- [Guia de Início Rápido](docs/QUICK-START.md)
-- [Conceitos de Testes de Mutação](docs/MUTATION-TESTING-CONCEPTS.md)
-- [Documentação Técnica](docs/TECHNICAL.md)
-- [Guia de Contribuição](CONTRIBUTING.md)
+- [Quick Start Guide](docs/QUICK-START.md)
+- [Mutation Testing Concepts](docs/MUTATION-TESTING-CONCEPTS.md)
+- [Technical Documentation](docs/TECHNICAL.md)
+- [Contributing Guide](CONTRIBUTING.md)
 
-## O que são Testes de Mutação?
+## What is Mutation Testing?
 
-Testes de mutação são uma técnica de teste de software que avalia a qualidade dos seus testes ao introduzir pequenas alterações (mutações) no código-fonte e verificar se os testes existentes detectam essas alterações. Isso ajuda a identificar partes do código que não estão sendo adequadamente testadas.
+Mutation testing is a software testing technique that evaluates the quality of your tests by introducing small changes (mutations) to the source code and checking if existing tests detect these changes. This helps identify parts of the code that are not being adequately tested.
 
-Alguns exemplos de mutações incluem:
-- Substituir operadores aritméticos (`+` por `-`, `*` por `/`, etc.)
-- Modificar operadores de comparação (`>` por `>=`, `==` por `!=`, etc.)
-- Remover instruções
-- Alterar valores booleanos (`true` por `false`)
+Some examples of mutations include:
+- Replacing arithmetic operators (`+` with `-`, `*` with `/`, etc.)
+- Modifying comparison operators (`>` with `>=`, `==` with `!=`, etc.)
+- Removing statements
+- Changing boolean values (`true` with `false`)
 
-## Como esta Action funciona
+## How this Action works
 
-1. A action executa o Stryker Mutator no seu código
-2. Analisa os resultados dos testes de mutação
-3. Verifica se a pontuação de mutação atende ao limite configurado
-4. Fornece métricas detalhadas como saída da action
+1. The action runs Stryker Mutator on your code
+2. Analyzes the mutation test results
+3. Checks if the mutation score meets the configured threshold
+4. Provides detailed metrics as action output
 
-## Uso
+## Usage
 
-### Configuração Básica
+### Basic Configuration
 
 ```yaml
 name: Mutation Testing
@@ -55,28 +55,28 @@ jobs:
 
 ### Inputs
 
-| Nome | Descrição | Obrigatório | Padrão |
-|------|-----------|-------------|--------|
-| `node-version` | Versão do Node.js a ser usada para executar os testes de mutação | Não | `20` |
+| Name | Description | Required | Default |
+|------|-------------|----------|--------|
+| `node-version` | Node.js version to use for running mutation tests | No | `20` |
 
 ### Outputs
 
-| Nome | Descrição |
-|------|-----------|
-| `mutation_metrics` | Objeto JSON contendo métricas detalhadas de testes de mutação, incluindo pontuação, mutantes mortos/sobreviventes e cobertura de testes |
+| Name | Description |
+|------|-------------|
+| `mutation_metrics` | JSON object containing detailed mutation test metrics, including score, killed/survived mutants, and test coverage |
 
-## Exemplos
+## Examples
 
-### Verificar pontuação de mutação mínima
+### Check Minimum Mutation Score
 
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  
+
   - name: Run Mutation Tests
     id: mutation
     uses: menoncello/mutation-test@v1
-    
+
   - name: Check Mutation Score
     run: |
       SCORE=$(echo '${{ steps.mutation.outputs.mutation_metrics }}' | jq -r '.mutationScore')
@@ -86,7 +86,7 @@ steps:
       fi
 ```
 
-### Publicar resultados como comentário em PR
+### Publish Results as PR Comment
 
 ```yaml
 steps:
@@ -117,14 +117,14 @@ steps:
         })
 ```
 
-## Desenvolvimento
+## Development
 
-### Pré-requisitos
+### Prerequisites
 
 - Node.js 20+
 - npm
 
-### Instalação
+### Installation
 
 ```bash
 git clone https://github.com/menoncello/mutation-test.git
@@ -132,32 +132,32 @@ cd mutation-test
 npm install
 ```
 
-### Scripts disponíveis
+### Available Scripts
 
-- `npm run test` - Executa os testes
-- `npm run lint` - Verifica o código com ESLint
-- `npm run format:write` - Formata o código com Prettier
-- `npm run package` - Compila o código TypeScript e cria o pacote
-- `npm run all` - Executa todas as verificações (format, lint, test, package)
+- `npm run test` - Run tests
+- `npm run lint` - Check code with ESLint
+- `npm run format:write` - Format code with Prettier
+- `npm run package` - Compile TypeScript code and create the package
+- `npm run all` - Run all checks (format, lint, test, package)
 
-### Testar localmente
+### Testing Locally
 
-Você pode testar esta action localmente usando a ferramenta @github/local-action:
+You can test this action locally using the @github/local-action tool:
 
 ```bash
 npm run local-action
 ```
 
-## Licença
+## License
 
-Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contribuição
+## Contributing
 
-Contribuições são bem-vindas! Por favor, sinta-se à vontade para enviar um Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-1. Faça um fork do projeto
-2. Crie sua branch de feature (`git checkout -b feature/amazing-feature`)
-3. Commit suas mudanças (`git commit -m 'Add some amazing feature'`)
-4. Push para a branch (`git push origin feature/amazing-feature`)
-5. Abra um Pull Request
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request

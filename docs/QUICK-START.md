@@ -1,32 +1,32 @@
-# Guia de Início Rápido
+# Quick Start Guide
 
-Este guia fornece instruções passo a passo para começar a usar o Mutation Test Action em seu projeto.
+This guide provides step-by-step instructions to start using the Mutation Test Action in your project.
 
-## Pré-requisitos
+## Prerequisites
 
-- Um projeto com testes unitários configurados (Jest, Mocha, etc.)
-- Um arquivo de configuração do Stryker (`stryker.conf.js` ou `stryker.conf.json`)
+- A project with configured unit tests (Jest, Mocha, etc.)
+- A Stryker configuration file (`stryker.conf.js` or `stryker.conf.json`)
 
-## Passos Básicos
+## Basic Steps
 
-### 1. Adicione o Stryker ao seu projeto
+### 1. Add Stryker to your project
 
-Se você ainda não tem o Stryker configurado:
+If you don't have Stryker configured yet:
 
 ```bash
-# Instale o Stryker
+# Install Stryker
 npm install --save-dev @stryker-mutator/core
 
-# Instale o runner para seu framework de teste (exemplo para Jest)
+# Install the runner for your test framework (example for Jest)
 npm install --save-dev @stryker-mutator/jest-runner
 
-# Inicialize a configuração do Stryker
+# Initialize Stryker configuration
 npx stryker init
 ```
 
-### 2. Crie um workflow do GitHub Actions
+### 2. Create a GitHub Actions workflow
 
-Crie um arquivo `.github/workflows/mutation.yml` no seu repositório:
+Create a `.github/workflows/mutation.yml` file in your repository:
 
 ```yaml
 name: Mutation Testing
@@ -42,27 +42,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-          
+
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Run Mutation Tests
         uses: menoncello/mutation-test@v1
         id: mutation
-        
+
       - name: Print Mutation Score
-        run: echo "Mutation Score: ${{ fromJson(steps.mutation.outputs.mutation_metrics).mutationScore }}%"
+        run:
+          echo "Mutation Score: ${{ fromJson(steps.mutation.outputs.mutation_metrics).mutationScore }}%"
 ```
 
-### 3. Personalize a configuração (opcional)
+### 3. Customize the configuration (optional)
 
-Você pode personalizar a configuração do Stryker no arquivo `stryker.conf.js`:
+You can customize the Stryker configuration in the `stryker.conf.js` file:
 
 ```javascript
 module.exports = {
@@ -86,22 +87,22 @@ module.exports = {
 };
 ```
 
-### 4. Execute o workflow
+### 4. Run the workflow
 
-Faça push das alterações para o seu repositório e o workflow será executado automaticamente.
+Push the changes to your repository and the workflow will run automatically.
 
-## Exemplos de Uso Avançado
+## Advanced Usage Examples
 
-### Definir um limite mínimo de pontuação de mutação
+### Set a minimum mutation score threshold
 
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  
+
   - name: Run Mutation Tests
     id: mutation
     uses: menoncello/mutation-test@v1
-    
+
   - name: Check Mutation Score
     run: |
       SCORE=$(echo '${{ steps.mutation.outputs.mutation_metrics }}' | jq -r '.mutationScore')
@@ -111,9 +112,9 @@ steps:
       fi
 ```
 
-### Adicionar badge de pontuação de mutação ao README
+### Add mutation score badge to README
 
-1. Crie um workflow que gera um badge:
+1. Create a workflow that generates a badge:
 
 ```yaml
 steps:
@@ -138,58 +139,58 @@ steps:
       path: ./mutation-score.svg
 ```
 
-2. Adicione o badge ao seu README:
+2. Add the badge to your README:
 
 ```markdown
 ![Mutation Score](https://github.com/username/repo/actions/workflows/mutation.yml/badge.svg)
 ```
 
-## Solução de Problemas
+## Troubleshooting
 
-### Testes de mutação muito lentos
+### Mutation tests are too slow
 
-Se os testes de mutação estiverem demorando muito:
+If mutation tests are taking too long:
 
-1. Limite o escopo dos arquivos a serem testados:
+1. Limit the scope of files to be tested:
 
 ```javascript
 // stryker.conf.js
 module.exports = {
   // ...
   mutate: [
-    "src/core/**/*.js",  // Teste apenas o código principal
+    "src/core/**/*.js",  // Test only the core code
     "!src/**/*.test.js"
   ],
   // ...
 };
 ```
 
-2. Aumente o paralelismo:
+2. Increase parallelism:
 
 ```javascript
 // stryker.conf.js
 module.exports = {
   // ...
-  concurrency: 6,  // Ajuste com base nos recursos disponíveis
+  concurrency: 6,  // Adjust based on available resources
   // ...
 };
 ```
 
-### Erros de timeout
+### Timeout errors
 
-Se você estiver enfrentando erros de timeout:
+If you're experiencing timeout errors:
 
 ```javascript
 // stryker.conf.js
 module.exports = {
   // ...
-  timeoutMS: 60000,  // Aumente o timeout para 60 segundos
+  timeoutMS: 60000,  // Increase timeout to 60 seconds
   // ...
 };
 ```
 
-## Próximos Passos
+## Next Steps
 
-- Consulte a [documentação técnica completa](TECHNICAL.md) para mais detalhes sobre o funcionamento interno da action.
-- Veja o [guia de contribuição](../CONTRIBUTING.md) se quiser contribuir para o projeto.
-- Explore a [documentação do Stryker](https://stryker-mutator.io/docs/stryker-js/introduction/) para aprender mais sobre testes de mutação.
+- Check the [complete technical documentation](TECHNICAL.md) for more details about the internal workings of the action.
+- See the [contribution guide](../CONTRIBUTING.md) if you want to contribute to the project.
+- Explore the [Stryker documentation](https://stryker-mutator.io/docs/stryker-js/introduction/) to learn more about mutation testing.

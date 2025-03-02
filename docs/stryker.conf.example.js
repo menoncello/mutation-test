@@ -1,82 +1,78 @@
 /**
- * Exemplo de configuração do Stryker Mutator para uso com o Mutation Test Action
- * 
- * Este arquivo serve como um exemplo de como configurar o Stryker Mutator
- * para uso com o Mutation Test Action. Você pode copiar este arquivo para
- * o seu projeto e ajustá-lo conforme necessário.
+ * Example configuration of Stryker Mutator for use with Mutation Test Action
+ *
+ * This file serves as an example of how to configure Stryker Mutator
+ * for use with Mutation Test Action. You can copy this file to
+ * your project and adjust it as needed.
  */
 module.exports = {
-  // Gerenciador de pacotes a ser usado
-  packageManager: "npm",
-  
-  // Reporters para gerar saídas em diferentes formatos
+  // Package manager to be used
+  packageManager: 'npm',
+
+  // Reporters to generate output in different formats
   reporters: [
-    "html",     // Gera um relatório HTML detalhado
-    "json",     // Gera um relatório JSON (necessário para o Mutation Test Action)
-    "progress", // Mostra o progresso no console
-    "clear-text" // Mostra um resumo no console
+    'html', // Generates a detailed HTML report
+    'json', // Generates a JSON report (required for Mutation Test Action)
+    'progress', // Shows progress in the console
+    'clear-text' // Shows a summary in the console
   ],
-  
-  // Framework de teste a ser usado
-  testRunner: "jest",
-  
-  // Como analisar a cobertura de código
-  coverageAnalysis: "perTest",
-  
-  // Configuração específica para o Jest
+
+  // Test framework to be used
+  testRunner: 'jest',
+
+  // How to analyze code coverage
+  coverageAnalysis: 'perTest',
+
+  // Jest-specific configuration
   jest: {
-    // Tipo de projeto (custom, create-react-app, etc.)
-    projectType: "custom",
-    // Caminho para o arquivo de configuração do Jest
-    configFile: "jest.config.js"
+    // Project type (custom, create-react-app, etc.)
+    projectType: 'custom',
+    // Path to Jest configuration file
+    configFile: 'jest.config.js'
   },
-  
-  // Arquivos a serem mutados
+
+  // Files to be mutated
   mutate: [
-    "src/**/*.ts",       // Incluir todos os arquivos TypeScript em src
-    "!src/**/*.test.ts", // Excluir arquivos de teste
-    "!src/**/*.spec.ts", // Excluir arquivos de teste
-    "!src/types/**/*.ts" // Excluir arquivos de tipos
+    'src/**/*.ts', // Include all TypeScript files in src
+    '!src/**/*.test.ts', // Exclude test files
+    '!src/**/*.spec.ts', // Exclude test files
+    '!src/types/**/*.ts' // Exclude type files
   ],
-  
-  // Limites para classificação da pontuação de mutação
+
+  // Thresholds for mutation score classification
   thresholds: {
-    high: 80,  // Pontuação acima de 80% é considerada alta
-    low: 60,   // Pontuação abaixo de 60% é considerada baixa
-    break: 50  // Falha se a pontuação for menor que 50%
+    high: 80, // Score above 80% is considered high
+    low: 60, // Score below 60% is considered low
+    break: 50 // Fails if the score is less than 50%
   },
-  
-  // Número máximo de processos paralelos
+
+  // Maximum number of parallel processes
   concurrency: 4,
-  
-  // Tempo limite em milissegundos para cada teste
+
+  // Timeout in milliseconds for each test
   timeoutMS: 30000,
-  
-  // Plugins a serem carregados
+
+  // Plugins to be loaded
   plugins: [
-    "@stryker-mutator/typescript-checker", // Verifica se as mutações são válidas em TypeScript
-    "@stryker-mutator/jest-runner"         // Runner para Jest
+    '@stryker-mutator/typescript-checker', // Checks if mutations are valid in TypeScript
+    '@stryker-mutator/jest-runner' // Runner for Jest
   ],
-  
-  // Configuração específica para TypeScript
-  tsconfigFile: "tsconfig.json",
-  
-  // Ignorar padrões de arquivos (além dos especificados em mutate)
-  ignorePatterns: [
-    "node_modules",
-    "dist",
-    "coverage"
-  ],
-  
-  // Configuração de mutadores específicos
+
+  // TypeScript-specific configuration
+  tsconfigFile: 'tsconfig.json',
+
+  // Ignore file patterns (in addition to those specified in mutate)
+  ignorePatterns: ['node_modules', 'dist', 'coverage'],
+
+  // Configuration of specific mutators
   mutator: {
-    // Quais mutadores usar
+    // Which mutators to use
     plugins: [
-      "typescript" // Usar mutadores específicos para TypeScript
+      'typescript' // Use TypeScript-specific mutators
     ],
-    // Excluir mutadores específicos
+    // Exclude specific mutators
     excludedMutations: [
-      // "StringLiteral" // Exemplo: não mutar strings literais
+      // "StringLiteral" // Example: do not mutate string literals
     ]
   }
-};
+}

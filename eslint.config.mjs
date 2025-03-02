@@ -27,6 +27,8 @@ export default [
       '**/dist',
       '**/linter',
       '**/node_modules',
+      '**/.stryker-tmp',
+      '**/docs',
       'eslint.config.mjs'
     ]
   },

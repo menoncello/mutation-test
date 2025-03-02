@@ -104,4 +104,6 @@ __tests__/runner/*
 # stryker temp files
 .stryker-tmp
 stryker-tmp
-
+mutation-report.html
+mutation-report.json
+npx
