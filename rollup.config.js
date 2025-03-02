@@ -21,5 +21,5 @@ export default {
     }),
     json()
   ],
-  external: ['@actions/core', 'fs-extra']
+  external: ['@actions/core', '@actions/exec', 'fs-extra']
 }
