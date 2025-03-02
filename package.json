@@ -29,7 +29,7 @@
     "format:check": "npx prettier --check .",
     "lint": "npx eslint . --ignore-pattern eslint.config.mjs",
     "local-action": "npx @github/local-action . src/index.ts .env",
-    "package": "npx rollup --config rollup.config.js",
+    "package": "npx rollup --config rollup.config.js --bundleConfigAsCjs",
     "package:watch": "npm run package -- --watch",
     "test": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 npx jest",
     "test:mutation": "stryker run --inPlace || rm -rf stryker-tmp",
