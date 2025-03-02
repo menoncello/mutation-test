@@ -5,4 +5,9 @@
 import { run } from './main'
 
 /* istanbul ignore next */
-run()
+export { run }
+
+// Auto-execute when running as an action
+if (process.env.GITHUB_ACTIONS) {
+  run()
+}

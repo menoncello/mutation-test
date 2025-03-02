@@ -123,17 +123,13 @@ describe('MutationService', () => {
   })
 
   describe('saveMetrics', () => {
-    it('should save metrics to both files with correct format', async () => {
+    it('should save metrics file with correct format', async () => {
       await service.saveMetrics(defaultMetrics)
 
       expect(mockedFs.writeJson).toHaveBeenCalledWith(
         'mutation-metrics.json',
         defaultMetrics,
         { spaces: 2 }
-      )
-      expect(mockedFs.writeFile).toHaveBeenCalledWith(
-        'mutation.txt',
-        defaultMetrics.score.toString()
       )
     })
 
@@ -144,19 +140,9 @@ describe('MutationService', () => {
       )
     })
 
-    it('should handle write errors for score file', async () => {
-      mockedFs.writeFile.mockRejectedValueOnce(
-        new Error('Write failed') as never
-      )
-      await expect(service.saveMetrics(defaultMetrics)).rejects.toThrow(
-        'Write failed'
-      )
-    })
-
     it('should handle metrics with zero score', async () => {
       const zeroMetrics = { ...defaultMetrics, score: 0 }
       await service.saveMetrics(zeroMetrics)
-      expect(mockedFs.writeFile).toHaveBeenCalledWith('mutation.txt', '0')
       expect(mockedFs.writeJson).toHaveBeenCalledWith(
         'mutation-metrics.json',
         zeroMetrics,

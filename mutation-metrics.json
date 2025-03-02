@@ -1,0 +1,19 @@
+{
+  "score": 75,
+  "killed": 50,
+  "survived": 10,
+  "timeout": 5,
+  "noCoverage": 15,
+  "mutants": {
+    "total": 2,
+    "mutated": [
+      "src/services/mutation-service.ts",
+      "src/runners/mutation-runner.ts"
+    ]
+  },
+  "testFiles": [
+    "src/__tests__/services/mutation-service.test.ts",
+    "src/__tests__/runners/mutation-runner.test.ts"
+  ],
+  "timestamp": "2025-03-02T16:39:29.464Z"
+}
