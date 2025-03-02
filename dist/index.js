@@ -1,11 +1,10 @@
 import * as core from '@actions/core';
 import { exec } from '@actions/exec';
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import { execSync } from 'child_process';
 
 class MutationService {
     metricsFile = 'mutation-metrics.json';
-    scoreFile = 'mutation.txt';
     async readMutationMetrics() {
         try {
             if (!fs.existsSync(this.metricsFile)) {
@@ -30,7 +29,6 @@ class MutationService {
     }
     async saveMetrics(metrics) {
         await fs.writeJson(this.metricsFile, metrics, { spaces: 2 });
-        await fs.writeFile(this.scoreFile, metrics.score.toString());
     }
     getDefaultMetrics() {
         return {
@@ -146,6 +144,10 @@ async function run() {
  * The entrypoint for the action. This file simply imports and runs the action's
  * main logic.
  */
-/* istanbul ignore next */
-run();
+// Auto-execute when running as an action
+if (process.env.GITHUB_ACTIONS) {
+    run();
+}
+
+export { run };
 //# sourceMappingURL=index.js.map
