@@ -30155,23 +30155,9 @@ async function setupNodeVersion() {
 }
 async function installDependencies() {
     try {
-        coreExports.info('Checking for required dependencies...');
-        try {
-            await execExports.exec('stryker --version');
-            coreExports.info('Stryker is already installed');
-        }
-        catch {
-            coreExports.info('Installing Stryker...');
-            await execExports.exec('npm install -g @stryker-mutator/core');
-        }
-        try {
-            await execExports.exec('ts-node --version');
-            coreExports.info('ts-node is already installed');
-        }
-        catch {
-            coreExports.info('Installing ts-node...');
-            await execExports.exec('npm install -g ts-node');
-        }
+        coreExports.info('Installing required dependencies...');
+        await execExports.exec('npm install -g stryker');
+        await execExports.exec('npm ci');
         coreExports.info('All dependencies are installed');
     }
     catch (error) {
