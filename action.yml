@@ -24,5 +24,6 @@ outputs:
       killed/survived mutants, and test coverage
 
 runs:
-  using: node20
-  main: dist/index.js
+  using: 'node20'
+  main: 'dist/index.js'
+
