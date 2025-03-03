@@ -25,6 +25,7 @@ A high mutation score indicates that your tests are effective at detecting poten
 - Fails the build if the mutation score decreases
 - Provides detailed metrics on mutation test results
 - Configurable Node.js version support
+- Automated CI/CD workflows with version bumping and artifact creation
 
 ## Installation
 
@@ -83,6 +84,30 @@ The action creates the following files:
 - Total number of mutants
 - List of mutated files
 - Timestamp of the test run
+
+## CI/CD Workflows
+
+This project includes comprehensive CI/CD workflows:
+
+### Continuous Integration (PR Validation)
+
+When a PR is opened or updated, the CI workflow automatically:
+- Runs TypeScript tests and mutation tests
+- Performs code linting
+- Validates the bundled distribution files
+- Checks if the action works correctly
+
+### Deployment (PR Merge)
+
+When a PR is merged, the deployment workflow automatically:
+- Validates code quality with tests and linting
+- Runs mutation tests and generates reports
+- Bumps version numbers based on commit history
+- Updates mutation metrics
+- Creates a new versioned release
+- Deploys the bundled files as artifacts
+
+For detailed information about the workflows, see [CI/CD Documentation](./docs/CICD.md).
 
 ## Development
 
