@@ -1,37 +1,7 @@
-#!/usr/bin/env node
+/* eslint-disable */
 
-import * as fs from 'fs'
-import * as path from 'path'
-
-interface MutationReport {
-  metrics?: {
-    mutationScore?: number
-    killed?: number
-    survived?: number
-    timedOut?: number
-    noCoverage?: number
-  }
-  files?: Record<
-    string,
-    {
-      mutants?: Array<unknown>
-    }
-  >
-  testFiles?: string[]
-}
-
-interface Metrics {
-  score: number
-  killed: number
-  survived: number
-  timeout: number
-  noCoverage: number
-  mutants: {
-    total: number
-    mutated: string[]
-  }
-  testFiles: string[]
-}
+const fs = require('fs')
+const path = require('path')
 
 // Path to the Stryker mutation report
 // For testing, we'll look for a temporary file first
@@ -49,10 +19,10 @@ try {
 
   // Read and parse the report
   const reportContent = fs.readFileSync(reportPath, 'utf8')
-  const report = JSON.parse(reportContent) as MutationReport
+  const report = JSON.parse(reportContent)
 
   // Extract metrics
-  const metrics: Metrics = {
+  const metrics = {
     score: report.metrics?.mutationScore ?? 0,
     killed: report.metrics?.killed ?? 0,
     survived: report.metrics?.survived ?? 0,
@@ -67,12 +37,13 @@ try {
         : 0,
       mutated: report.files ? Object.keys(report.files) : []
     },
-    testFiles: report.testFiles ?? []
+    testFiles: report.testFiles ?? [],
+    timestamp: new Date().toISOString()
   }
 
   // Output the metrics as JSON
   console.log(JSON.stringify(metrics, null, 2))
 } catch (error) {
-  console.error('Error extracting mutation metrics:', (error as Error).message)
+  console.error('Error extracting mutation metrics:', error.message)
   process.exit(1)
 }

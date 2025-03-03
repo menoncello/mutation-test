@@ -21,7 +21,7 @@
   },
   "dashboard": {
     "project": "github.com/menoncello/mutation-test",
-    "version": "master",
+    "version": "main",
     "baseUrl": "https://dashboard.stryker-mutator.io"
   },
   "testRunner": "jest",
