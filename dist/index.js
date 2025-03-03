@@ -30060,7 +30060,7 @@ class MutationRunner {
         this.mutationService = mutationService;
     }
     validateMetrics(metrics) {
-        if (isNaN(metrics.score)) {
+        if (isNaN(metrics.score) || !isFinite(metrics.score)) {
             throw new Error('Invalid score value in metrics');
         }
         if (metrics.score > 100) {
@@ -30074,12 +30074,10 @@ class MutationRunner {
         coreExports.info(`- Survived: ${metrics.survived}`);
         coreExports.info(`- Timeout: ${metrics.timeout}`);
         coreExports.info(`- No Coverage: ${metrics.noCoverage}`);
-        if (metrics.mutants.mutated.length) {
-            coreExports.debug('Mutated files:');
-            metrics.mutants.mutated.forEach((file) => {
-                coreExports.debug(`  - ${file}`);
-            });
-        }
+        coreExports.debug('Mutated files:');
+        metrics.mutants.mutated.forEach((file) => {
+            coreExports.debug(`  - ${file}`);
+        });
     }
     compareScores(oldScore, newScore) {
         if (newScore < oldScore) {
@@ -30096,7 +30094,23 @@ class MutationRunner {
             require$$2$2.execSync('npm run test:mutation', { stdio: 'inherit' });
         }
         catch (error) {
-            const errorMsg = `Test execution failed: ${error instanceof Error ? error.message : 'unknown error'}`;
+            const errorMessage = error instanceof Error ? error.message : 'unknown error';
+            // Check for common errors
+            if (errorMessage.includes('stryker: not found')) {
+                const detailedError = 'Stryker command not found. This usually happens when Stryker is not installed. ' +
+                    'The action will attempt to install it automatically, but if this error persists, ' +
+                    'please ensure @stryker-mutator/core is installed either globally or as a dev dependency.';
+                coreExports.setFailed(detailedError);
+                throw new Error(detailedError);
+            }
+            if (errorMessage.includes('Cannot find module')) {
+                const detailedError = `Module not found: ${errorMessage}. ` +
+                    'This usually happens when a required dependency is missing. ' +
+                    'Please check your package.json and ensure all required dependencies are installed.';
+                coreExports.setFailed(detailedError);
+                throw new Error(detailedError);
+            }
+            const errorMsg = `Test execution failed: ${errorMessage}`;
             coreExports.setFailed(errorMsg);
             throw new Error(errorMsg);
         }
@@ -30132,7 +30146,6 @@ class MutationRunner {
 async function setupNodeVersion() {
     try {
         const nodeVersion = coreExports.getInput('node-version') || '20';
-        // Use volta to switch Node.js version
         await execExports.exec('volta install node@' + nodeVersion);
         await execExports.exec('volta run node --version');
     }
@@ -30140,8 +30153,34 @@ async function setupNodeVersion() {
         coreExports.warning(`Failed to set Node.js version: ${error}. Continuing with current version.`);
     }
 }
+async function installDependencies() {
+    try {
+        coreExports.info('Checking for required dependencies...');
+        try {
+            await execExports.exec('stryker --version');
+            coreExports.info('Stryker is already installed');
+        }
+        catch {
+            coreExports.info('Installing Stryker...');
+            await execExports.exec('npm install -g @stryker-mutator/core');
+        }
+        try {
+            await execExports.exec('ts-node --version');
+            coreExports.info('ts-node is already installed');
+        }
+        catch {
+            coreExports.info('Installing ts-node...');
+            await execExports.exec('npm install -g ts-node');
+        }
+        coreExports.info('All dependencies are installed');
+    }
+    catch (error) {
+        coreExports.warning(`Failed to install dependencies: ${error}. This may cause issues.`);
+    }
+}
 async function run() {
     await setupNodeVersion();
+    await installDependencies();
     const mutationService = new MutationService();
     const mutationRunner = new MutationRunner(mutationService);
     await mutationRunner.run();

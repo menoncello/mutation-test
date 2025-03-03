@@ -33,6 +33,7 @@
     "package:watch": "npm run package -- --watch",
     "test": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 npx jest",
     "test:mutation": "stryker run --inPlace || rm -rf stryker-tmp",
+    "test:mutation:no-dashboard": "stryker run --reporters clear-text,progress,dots,html,json --inPlace || rm -rf stryker-tmp",
     "get:mutation-metrics": "ts-node script/get-mutation-metrics.ts",
     "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package",
     "prepare": "husky",
