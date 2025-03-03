@@ -27,7 +27,8 @@ export default [
       '**/dist',
       '**/linter',
       '**/node_modules',
-      'eslint.config.mjs'
+      'eslint.config.mjs',
+      '**/docs/CONTRIBUTING.md'
     ]
   },
   ...compat.extends(
