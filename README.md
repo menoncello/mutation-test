@@ -10,13 +10,22 @@ A GitHub Action to enforce mutation testing quality in your CI/CD pipeline.
 
 ## Overview
 
-Mutation Test Action runs mutation testing on your codebase and ensures that your mutation score doesn't decrease over time. This helps maintain and improve the quality of your test suite by identifying areas where your tests fail to detect potential bugs.
+Mutation Test Action runs mutation testing on your codebase and ensures that
+your mutation score doesn't decrease over time. This helps maintain and improve
+the quality of your test suite by identifying areas where your tests fail to
+detect potential bugs.
 
 ## What is Mutation Testing?
 
-Mutation testing is a technique used to evaluate the effectiveness of your test suite. It works by introducing small changes (mutations) to your source code and then running your tests against these mutated versions. If your tests fail when run against a mutation, that mutation is "killed". The percentage of killed mutations out of the total mutations generated is your mutation score.
+Mutation testing is a technique used to evaluate the effectiveness of your test
+suite. It works by introducing small changes (mutations) to your source code and
+then running your tests against these mutated versions. If your tests fail when
+run against a mutation, that mutation is "killed". The percentage of killed
+mutations out of the total mutations generated is your mutation score.
 
-A high mutation score indicates that your tests are effective at detecting potential bugs, while a low score suggests that your test suite might miss certain issues.
+A high mutation score indicates that your tests are effective at detecting
+potential bugs, while a low score suggests that your test suite might miss
+certain issues.
 
 ## Features
 
@@ -36,9 +45,9 @@ name: Mutation Testing
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   mutation-test:
@@ -55,7 +64,7 @@ jobs:
 ## Inputs
 
 | Input          | Description            | Required | Default |
-|----------------|------------------------|----------|---------|
+| -------------- | ---------------------- | -------- | ------- |
 | `node-version` | Node.js version to use | No       | '20'    |
 
 ## Outputs
@@ -92,6 +101,7 @@ This project includes comprehensive CI/CD workflows:
 ### Continuous Integration (PR Validation)
 
 When a PR is opened or updated, the CI workflow automatically:
+
 - Runs TypeScript tests and mutation tests
 - Performs code linting
 - Validates the bundled distribution files
@@ -100,6 +110,7 @@ When a PR is opened or updated, the CI workflow automatically:
 ### Deployment (PR Merge)
 
 When a PR is merged, the deployment workflow automatically:
+
 - Validates code quality with tests and linting
 - Runs mutation tests and generates reports
 - Bumps version numbers based on commit history
@@ -107,7 +118,8 @@ When a PR is merged, the deployment workflow automatically:
 - Creates a new versioned release
 - Deploys the bundled files as artifacts
 
-For detailed information about the workflows, see [CI/CD Documentation](./docs/CICD.md).
+For detailed information about the workflows, see
+[CI/CD Documentation](./docs/CICD.md).
 
 ## Development
 

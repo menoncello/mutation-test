@@ -1,24 +1,30 @@
 # Technical Documentation
 
-This document provides technical details about how the Mutation Test Action works internally, which is useful for contributors and developers who want to customize the action.
+This document provides technical details about how the Mutation Test Action
+works internally, which is useful for contributors and developers who want to
+customize the action.
 
 ## Architecture
 
-The Mutation Test Action is built using TypeScript and follows a modular architecture with the following key components:
+The Mutation Test Action is built using TypeScript and follows a modular
+architecture with the following key components:
 
 ### Main Components
 
 1. **Main Entry Point (`src/main.ts`)**
+
    - Sets up the environment
    - Orchestrates the execution flow
    - Handles error reporting to GitHub Actions
 
 2. **MutationService (`src/services/mutation-service.ts`)**
+
    - Reads and writes mutation metrics
    - Interfaces with the mutation testing framework (Stryker)
    - Manages mutation test result data
 
 3. **MutationRunner (`src/runners/mutation-runner.ts`)**
+
    - Controls the execution of mutation tests
    - Validates and compares mutation scores
    - Reports detailed metrics to GitHub Actions
@@ -53,7 +59,9 @@ MutationRunner.run()
 
 ### Reading Previous Metrics
 
-The `MutationService.readMutationMetrics()` method reads previous metrics from the `mutation-metrics.json` file. If the file doesn't exist or is invalid, it returns default metrics with a score of 0.
+The `MutationService.readMutationMetrics()` method reads previous metrics from
+the `mutation-metrics.json` file. If the file doesn't exist or is invalid, it
+returns default metrics with a score of 0.
 
 ```typescript
 async readMutationMetrics(): Promise<MutationMetrics> {
@@ -75,7 +83,8 @@ async readMutationMetrics(): Promise<MutationMetrics> {
 
 ### Running Mutation Tests
 
-The `MutationRunner.runMutationTests()` method executes the mutation tests using the npm script `test:mutation`, which runs Stryker Mutator:
+The `MutationRunner.runMutationTests()` method executes the mutation tests using
+the npm script `test:mutation`, which runs Stryker Mutator:
 
 ```typescript
 private runMutationTests(): void {
@@ -92,7 +101,8 @@ private runMutationTests(): void {
 
 ### Score Comparison
 
-The `MutationRunner.compareScores()` method compares the old and new mutation scores. If the new score is lower than the old one, it fails the build:
+The `MutationRunner.compareScores()` method compares the old and new mutation
+scores. If the new score is lower than the old one, it fails the build:
 
 ```typescript
 private compareScores(oldScore: number, newScore: number): void {
@@ -114,7 +124,8 @@ private compareScores(oldScore: number, newScore: number): void {
 
 ### Stryker Configuration
 
-The action relies on the project's `stryker.config.json` file for configuring mutation testing. This file can be customized to change:
+The action relies on the project's `stryker.config.json` file for configuring
+mutation testing. This file can be customized to change:
 
 - Mutation operators
 - Test runner settings
@@ -123,12 +134,16 @@ The action relies on the project's `stryker.config.json` file for configuring mu
 
 ### Node.js Version
 
-The action supports customizing the Node.js version through the `node-version` input parameter, which is managed by the `setupNodeVersion()` function in `main.ts`.
+The action supports customizing the Node.js version through the `node-version`
+input parameter, which is managed by the `setupNodeVersion()` function in
+`main.ts`.
 
 ## Performance Considerations
 
-- Mutation testing is computationally intensive and may take significant time on large codebases
-- The action stores metrics in JSON format to enable efficient comparison between runs
+- Mutation testing is computationally intensive and may take significant time on
+  large codebases
+- The action stores metrics in JSON format to enable efficient comparison
+  between runs
 - Only minimal data is logged to the GitHub Actions console to avoid cluttering
 
 ## Error Handling

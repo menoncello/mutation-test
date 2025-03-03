@@ -1,10 +1,12 @@
 # CI/CD Workflows Documentation
 
-This document details the Continuous Integration and Continuous Deployment workflows implemented for the Mutation Test Action project.
+This document details the Continuous Integration and Continuous Deployment
+workflows implemented for the Mutation Test Action project.
 
 ## Overview
 
-The project uses GitHub Actions to automate testing, validation, and deployment processes. Two main workflows are configured:
+The project uses GitHub Actions to automate testing, validation, and deployment
+processes. Two main workflows are configured:
 
 1. **Continuous Integration (CI)** - Runs on pull request creation and updates
 2. **Deployment** - Runs when pull requests are merged
@@ -13,7 +15,8 @@ The project uses GitHub Actions to automate testing, validation, and deployment 
 
 File: `.github/workflows/ci.yml`
 
-This workflow triggers when pull requests are opened, synchronized, reopened, or closed against the `main`, `develop`, or `release/**` branches.
+This workflow triggers when pull requests are opened, synchronized, reopened, or
+closed against the `main`, `develop`, or `release/**` branches.
 
 ### Jobs
 
@@ -55,7 +58,8 @@ Validates the distribution files:
 
 File: `.github/workflows/deploy.yml`
 
-This workflow triggers when pull requests are closed (merged) against the `main`, `develop`, or `release/**` branches.
+This workflow triggers when pull requests are closed (merged) against the
+`main`, `develop`, or `release/**` branches.
 
 ### Jobs
 
@@ -69,7 +73,8 @@ Identical to the CI workflow's Lint Codebase job.
 
 #### 3. Check dist/
 
-Similar to the CI workflow's Check dist/ job, but runs after the Lint and TypeScript Tests jobs have completed successfully.
+Similar to the CI workflow's Check dist/ job, but runs after the Lint and
+TypeScript Tests jobs have completed successfully.
 
 #### 4. Mutation Test
 
@@ -116,7 +121,8 @@ The deployment workflow produces several outputs:
 
 To customize these workflows:
 
-1. Edit the appropriate workflow file (`.github/workflows/ci.yml` or `.github/workflows/deploy.yml`)
+1. Edit the appropriate workflow file (`.github/workflows/ci.yml` or
+   `.github/workflows/deploy.yml`)
 2. Modify the triggers, jobs, or steps as needed
 3. Commit and push the changes
 

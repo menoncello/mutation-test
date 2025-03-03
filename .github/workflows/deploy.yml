@@ -104,7 +104,7 @@ jobs:
   check-dist:
     name: Check dist/
     runs-on: ubuntu-latest
-    needs: [ lint, test-typescript ]
+    needs: [lint, test-typescript]
     steps:
       - name: Checkout
         id: checkout
@@ -149,12 +149,10 @@ jobs:
             exit 1
           fi
 
-
-
   mutation-test:
     name: GitHub Actions Test
     runs-on: ubuntu-latest
-    needs: [ check-dist ]
+    needs: [check-dist]
     outputs:
       mutation_metrics: ${{ steps.test-action.outputs.mutation_metrics }}
     steps:
@@ -181,12 +179,10 @@ jobs:
             mutation-report.json
             mutation-metrics.json
 
-
-
   bump-version:
     name: Bump Version
     runs-on: ubuntu-latest
-    needs: [ mutation-test ]
+    needs: [mutation-test]
     steps:
       - name: Checkout
         id: checkout
@@ -216,8 +212,8 @@ jobs:
       - name: Configure Git
         shell: bash
         env:
-          GIT_USER_NAME: "github-actions"
-          GIT_USER_EMAIL: "actions@github.com"
+          GIT_USER_NAME: 'github-actions'
+          GIT_USER_EMAIL: 'actions@github.com'
         run: |
           git config --global user.name "$GIT_USER_NAME"
           git config --global user.email "$GIT_USER_EMAIL"
@@ -227,20 +223,20 @@ jobs:
         run: |
           # Obtains the new version
           new_version=v$(npm run next-preview --silent | tail -1)
-          
+
           # Update the version in package.json without creating a commit
           echo "Bump version to $new_version"
           npm version $new_version --no-git-tag-version
-          
+
           # Update mutation metrics
           echo ${{ needs.mutation-test.outputs.mutation_metrics }} > mutation-metrics.json
           cat mutation.txt
-          
+
           # Create a commit with the new version 
           git add package.json package-lock.json mutation.txt
           git commit --no-verify -m "chore: bump version to $new_version"
           git tag $new_version
-          
+
           # Push changes
           echo "Version updated to $new_version"
           git push -f origin ${{ github.event.ref }}
@@ -249,7 +245,7 @@ jobs:
   deploy:
     name: Deploy dist to Artifacts
     runs-on: ubuntu-latest
-    needs: [ bump-version ]
+    needs: [bump-version]
     steps:
       - name: Checkout
         id: checkout
