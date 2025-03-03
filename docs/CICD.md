@@ -13,7 +13,7 @@ processes. Two main workflows are configured:
 
 ## Continuous Integration Workflow
 
-File: `.github/workflows/ci.yml`
+File: `.github/workflows/ci.yaml`
 
 This workflow triggers when pull requests are opened, synchronized, reopened, or
 closed against the `main`, `develop`, or `release/**` branches.
@@ -56,7 +56,7 @@ Validates the distribution files:
 
 ## Deployment Workflow
 
-File: `.github/workflows/deploy.yml`
+File: `.github/workflows/deploy.yaml`
 
 This workflow triggers when pull requests are closed (merged) against the
 `main`, `develop`, or `release/**` branches.
@@ -121,8 +121,8 @@ The deployment workflow produces several outputs:
 
 To customize these workflows:
 
-1. Edit the appropriate workflow file (`.github/workflows/ci.yml` or
-   `.github/workflows/deploy.yml`)
+1. Edit the appropriate workflow file (`.github/workflows/ci.yaml` or
+   `.github/workflows/deploy.yaml`)
 2. Modify the triggers, jobs, or steps as needed
 3. Commit and push the changes
 

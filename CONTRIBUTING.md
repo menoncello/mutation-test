@@ -61,8 +61,8 @@ documentation:
 3. Update the README.md if your changes affect how users interact with the
    action
 4. Include examples of how to use new features in your PR description
-5. If you're adding new inputs or outputs to the action, update the `action.yml`
-   file documentation
+5. If you're adding new inputs or outputs to the action, update the
+   `action.yaml` file documentation
 
 Documentation should be clear, concise, and written in English. Remember that
 good documentation is as important as good code!

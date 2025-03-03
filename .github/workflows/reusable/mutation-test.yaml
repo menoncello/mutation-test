@@ -1,0 +1,54 @@
+name: Mutation Testing
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: false
+        default: '20'
+        type: string
+        description: 'Node version to use'
+      upload-artifacts:
+        required: false
+        default: false
+        type: boolean
+        description: 'Whether to upload mutation reports as artifacts'
+    outputs:
+      mutation_metrics:
+        description: 'Mutation metrics output'
+        value: ${{ jobs.mutation-test.outputs.mutation_metrics }}
+
+jobs:
+  mutation-test:
+    name: GitHub Actions Mutation Test
+    runs-on: ubuntu-latest
+    outputs:
+      mutation_metrics: ${{ steps.test-action.outputs.mutation_metrics }}
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: ./.github/workflows/reusable/setup-node.yaml
+        with:
+          node-version-file: .node-version
+
+      - name: Test Local Action
+        id: test-action
+        uses: ./
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Print Output
+        id: output
+        run: echo "${{ steps.test-action.outputs.mutation_metrics }}"
+
+      - name: Upload mutation report
+        if: ${{ inputs.upload-artifacts }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-report
+          path: |
+            mutation-report.html
+            mutation-report.json
+            mutation-metrics.json

@@ -3,10 +3,10 @@
 This document provides detailed information about configuring the Mutation Test
 Action in your GitHub workflows.
 
-## action.yml
+## action.yaml
 
-The `action.yml` file defines the inputs, outputs, and runtime configuration for
-the GitHub Action.
+The `action.yaml` file defines the inputs, outputs, and runtime configuration
+for the GitHub Action.
 
 ### Name and Description
 

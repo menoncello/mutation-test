@@ -1,0 +1,7 @@
+dist/**/*
+coverage/**/*
+node_modules/**/*
+stryker-tmp/**/*
+.licenses/**/*
+mutation-report.html
+mutation-report.json

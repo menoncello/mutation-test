@@ -1,0 +1,108 @@
+name: Deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+      - release/**
+    types:
+      - closed
+
+permissions:
+  contents: read
+
+jobs:
+  test-typescript:
+    name: TypeScript Tests
+    uses: ./.github/workflows/reusable/typescript-test.yaml
+
+  lint:
+    name: Lint Codebase
+    uses: ./.github/workflows/reusable/lint.yaml
+
+  check-dist:
+    name: Check dist/
+    uses: ./.github/workflows/reusable/check-dist.yaml
+    needs: [lint, test-typescript]
+
+  mutation-test:
+    name: GitHub Actions Test
+    needs: [check-dist]
+    uses: ./.github/workflows/reusable/mutation-test.yaml
+    with:
+      upload-artifacts: true
+
+  bump-version:
+    name: Bump Version
+    runs-on: ubuntu-latest
+    needs: [mutation-test]
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: ./.github/workflows/reusable/setup-node.yaml
+        with:
+          node-version-file: .node-version
+
+      - name: Configure Git
+        shell: bash
+        env:
+          GIT_USER_NAME: 'github-actions'
+          GIT_USER_EMAIL: 'actions@github.com'
+        run: |
+          git config --global user.name "$GIT_USER_NAME"
+          git config --global user.email "$GIT_USER_EMAIL"
+
+      - name: Bump Version
+        id: bump-version
+        run: |
+          # Obtains the new version
+          new_version=v$(npm run next-preview --silent | tail -1)
+
+          # Update the version in package.json without creating a commit
+          echo "Bump version to $new_version"
+          npm version $new_version --no-git-tag-version
+
+          # Update mutation metrics
+          echo ${{ needs.mutation-test.outputs.mutation_metrics }} > mutation-metrics.json
+          cat mutation.txt
+
+          # Create a commit with the new version 
+          git add package.json package-lock.json mutation.txt
+          git commit --no-verify -m "chore: bump version to $new_version"
+          git tag $new_version
+
+          # Push changes
+          echo "Version updated to $new_version"
+          git push -f origin ${{ github.event.ref }}
+          git push -f --tags
+
+  deploy:
+    name: Deploy dist to Artifacts
+    runs-on: ubuntu-latest
+    needs: [bump-version]
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: ./.github/workflows/reusable/setup-node.yaml
+        with:
+          node-version-file: .node-version
+
+      - name: Build dist/ Directory
+        id: build
+        run: npm run bundle
+
+      - name: Upload Artifact
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/

@@ -1,0 +1,33 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+      - release/**
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+
+permissions:
+  contents: read
+
+jobs:
+  test-typescript:
+    name: TypeScript Tests
+    uses: ./.github/workflows/reusable/typescript-test.yaml
+
+  lint:
+    name: Lint Codebase
+    uses: ./.github/workflows/reusable/lint.yaml
+
+  check-dist:
+    name: Check dist/
+    uses: ./.github/workflows/reusable/check-dist.yaml
+
+  test-action:
+    name: GitHub Actions Test
+    uses: ./.github/workflows/reusable/mutation-test.yaml
