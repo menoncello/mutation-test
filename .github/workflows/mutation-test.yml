@@ -1,0 +1,49 @@
+name: Mutation Testing
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mutation-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install global dependencies
+        run: npm install -g @stryker-mutator/core ts-node
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run mutation tests
+        uses: ./
+        with:
+          node-version: '20'
+
+      - name: Upload mutation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-report
+          path: |
+            mutation-report.html
+            mutation-report.json
+            mutation-metrics.json

@@ -8,7 +8,7 @@ export default {
   input: 'src/index.ts',
   output: {
     dir: 'dist',
-    format: 'es',
+    format: 'cjs',
     sourcemap: true
   },
   plugins: [
@@ -20,6 +20,6 @@ export default {
       tsconfig: './tsconfig.json'
     }),
     json()
-  ],
-  external: ['@actions/core', 'fs-extra']
+  ]
+  // Removed external dependencies to include them in the bundle
 }

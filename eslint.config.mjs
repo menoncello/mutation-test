@@ -29,6 +29,8 @@ export default [
       '**/node_modules',
       'eslint.config.mjs',
       '**/docs/CONTRIBUTING.md'
+      '**/coverage/',
+      '**/stryker-tmp/'
     ]
   },
   ...compat.extends(
