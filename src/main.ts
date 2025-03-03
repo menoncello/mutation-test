@@ -17,22 +17,27 @@ export async function setupNodeVersion(): Promise<void> {
 
 export async function installDependencies(): Promise<void> {
   try {
-    core.info('Checking for required dependencies...')
+    core.info('Installing required dependencies...')
 
-    try {
-      await exec('stryker --version')
-      core.info('Stryker is already installed')
-    } catch {
-      core.info('Installing Stryker...')
-      await exec('npm install -g @stryker-mutator/core')
-    }
+    const packages = [
+      {
+        name: '@stryker-mutator/core',
+        command: 'stryker --version',
+        install: 'npm install -g @stryker-mutator/core'
+      },
+      {
+        name: 'ts-node',
+        command: 'ts-node --version',
+        install: 'npm install -g ts-node'
+      },
+      {
+        name: '@types/node',
+        install: 'npm install -D @types/node'
+      }
+    ]
 
-    try {
-      await exec('ts-node --version')
-      core.info('ts-node is already installed')
-    } catch {
-      core.info('Installing ts-node...')
-      await exec('npm install -g ts-node')
+    for (const p of packages) {
+      await exec(p.install)
     }
 
     core.info('All dependencies are installed')
