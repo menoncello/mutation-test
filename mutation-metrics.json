@@ -1,19 +1,13 @@
 {
-  "score": 75,
-  "killed": 50,
-  "survived": 10,
-  "timeout": 5,
-  "noCoverage": 15,
+  "score": 0,
+  "killed": 0,
+  "survived": 0,
+  "timeout": 0,
+  "noCoverage": 0,
   "mutants": {
-    "total": 2,
-    "mutated": [
-      "src/services/mutation-service.ts",
-      "src/runners/mutation-runner.ts"
-    ]
+    "total": 0,
+    "mutated": []
   },
-  "testFiles": [
-    "src/__tests__/services/mutation-service.test.ts",
-    "src/__tests__/runners/mutation-runner.test.ts"
-  ],
-  "timestamp": "2025-03-02T16:39:29.464Z"
+  "testFiles": [],
+  "timestamp": "2025-01-01T00:00:00.000Z"
 }
