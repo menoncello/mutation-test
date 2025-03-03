@@ -29,6 +29,7 @@ export default [
       '**/node_modules',
       'eslint.config.mjs',
       '**/docs/CONTRIBUTING.md',
+      '**/docs/TECHNICAL.md',
       '**/coverage/',
       '**/stryker-tmp/'
     ]
