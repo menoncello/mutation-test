@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Run Mutation Tests
         uses: your-username/mutation-test-action@v1
         with:
@@ -53,9 +53,9 @@ jobs:
 
 ## Inputs
 
-| Input | Description | Required | Default |
-|-------|-------------|----------|---------|
-| `node-version` | Node.js version to use | No | '20' |
+| Input          | Description            | Required | Default |
+|----------------|------------------------|----------|---------|
+| `node-version` | Node.js version to use | No       | '20'    |
 
 ## Outputs
 

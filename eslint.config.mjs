@@ -28,7 +28,7 @@ export default [
       '**/linter',
       '**/node_modules',
       'eslint.config.mjs',
-      '**/docs/CONTRIBUTING.md'
+      '**/docs/CONTRIBUTING.md',
       '**/coverage/',
       '**/stryker-tmp/'
     ]
