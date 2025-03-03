@@ -7,7 +7,7 @@ export class MutationRunner {
   constructor(private readonly mutationService: MutationService) {}
 
   private validateMetrics(metrics: MutationMetrics): void {
-    if (isNaN(metrics.score)) {
+    if (isNaN(metrics.score) || !isFinite(metrics.score)) {
       throw new Error('Invalid score value in metrics')
     }
 
@@ -23,13 +23,10 @@ export class MutationRunner {
     core.info(`- Survived: ${metrics.survived}`)
     core.info(`- Timeout: ${metrics.timeout}`)
     core.info(`- No Coverage: ${metrics.noCoverage}`)
-
-    if (metrics.mutants.mutated.length) {
-      core.debug('Mutated files:')
-      metrics.mutants.mutated.forEach((file) => {
-        core.debug(`  - ${file}`)
-      })
-    }
+    core.debug('Mutated files:')
+    metrics.mutants.mutated.forEach((file) => {
+      core.debug(`  - ${file}`)
+    })
   }
 
   private compareScores(oldScore: number, newScore: number): void {
@@ -52,7 +49,29 @@ export class MutationRunner {
     try {
       execSync('npm run test:mutation', { stdio: 'inherit' })
     } catch (error) {
-      const errorMsg = `Test execution failed: ${error instanceof Error ? error.message : 'unknown error'}`
+      const errorMessage =
+        error instanceof Error ? error.message : 'unknown error'
+
+      // Check for common errors
+      if (errorMessage.includes('stryker: not found')) {
+        const detailedError =
+          'Stryker command not found. This usually happens when Stryker is not installed. ' +
+          'The action will attempt to install it automatically, but if this error persists, ' +
+          'please ensure @stryker-mutator/core is installed either globally or as a dev dependency.'
+        core.setFailed(detailedError)
+        throw new Error(detailedError)
+      }
+
+      if (errorMessage.includes('Cannot find module')) {
+        const detailedError =
+          `Module not found: ${errorMessage}. ` +
+          'This usually happens when a required dependency is missing. ' +
+          'Please check your package.json and ensure all required dependencies are installed.'
+        core.setFailed(detailedError)
+        throw new Error(detailedError)
+      }
+
+      const errorMsg = `Test execution failed: ${errorMessage}`
       core.setFailed(errorMsg)
       throw new Error(errorMsg)
     }

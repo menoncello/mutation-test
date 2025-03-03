@@ -27,7 +27,9 @@ export default [
       '**/dist',
       '**/linter',
       '**/node_modules',
-      'eslint.config.mjs'
+      'eslint.config.mjs',
+      '**/coverage/',
+      '**/stryker-tmp/'
     ]
   },
   ...compat.extends(

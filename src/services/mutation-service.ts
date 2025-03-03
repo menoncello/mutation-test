@@ -1,11 +1,10 @@
 import * as core from '@actions/core'
-import * as fs from 'fs-extra'
+import fs from 'fs-extra'
 import { execSync } from 'child_process'
 import { MutationMetrics } from '../types/mutation'
 
 export class MutationService {
   private readonly metricsFile = 'mutation-metrics.json'
-  private readonly scoreFile = 'mutation.txt'
 
   async readMutationMetrics(): Promise<MutationMetrics> {
     try {
@@ -35,7 +34,6 @@ export class MutationService {
 
   async saveMetrics(metrics: MutationMetrics): Promise<void> {
     await fs.writeJson(this.metricsFile, metrics, { spaces: 2 })
-    await fs.writeFile(this.scoreFile, metrics.score.toString())
   }
 
   private getDefaultMetrics(): MutationMetrics {

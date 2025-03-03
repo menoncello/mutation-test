@@ -3,7 +3,6 @@
   "description": "GitHub Action to check mutation testing metrics",
   "version": "0.0.0",
   "author": "",
-  "type": "module",
   "private": true,
   "homepage": "https://github.com/actions/typescript-action",
   "repository": {
@@ -30,21 +29,24 @@
     "format:check": "npx prettier --check .",
     "lint": "npx eslint . --ignore-pattern eslint.config.mjs",
     "local-action": "npx @github/local-action . src/index.ts .env",
-    "package": "npx rollup --config rollup.config.js",
+    "package": "npx rollup --config rollup.config.js --bundleConfigAsCjs",
     "package:watch": "npm run package -- --watch",
     "test": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 npx jest",
     "test:mutation": "stryker run --inPlace || rm -rf stryker-tmp",
+    "test:mutation:no-dashboard": "stryker run --reporters clear-text,progress,dots,html,json --inPlace || rm -rf stryker-tmp",
+    "get:mutation-metrics": "node script/get-mutation-metrics.js",
     "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package",
     "prepare": "husky",
     "commitlint": "commitlint --config commitlint.config.json --edit"
   },
   "license": "MIT",
   "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/exec": "^1.1.1",
     "@stryker-mutator/typescript-checker": "^8.7.1",
     "fs-extra": "^11.3.0"
   },
   "devDependencies": {
-    "@actions/core": "^1.11.1",
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
     "@eslint/compat": "^1.2.7",
