@@ -19,26 +19,8 @@ export async function installDependencies(): Promise<void> {
   try {
     core.info('Installing required dependencies...')
 
-    const packages = [
-      {
-        name: '@stryker-mutator/core',
-        command: 'stryker --version',
-        install: 'npm install -g @stryker-mutator/core'
-      },
-      {
-        name: 'ts-node',
-        command: 'ts-node --version',
-        install: 'npm install -g ts-node'
-      },
-      {
-        name: '@types/node',
-        install: 'npm install -D @types/node'
-      }
-    ]
-
-    for (const p of packages) {
-      await exec(p.install)
-    }
+    await exec('npm install -g stryker')
+    await exec('npm ci')
 
     core.info('All dependencies are installed')
   } catch (error) {

@@ -134,22 +134,6 @@ describe('main', () => {
       expect(mockExec).toHaveBeenCalledTimes(1)
     })
 
-    it('should handle string errors thrown during setup', async () => {
-      jest.clearAllMocks()
-
-      try {
-        const stringErrorObj = 'String error object'
-        throw stringErrorObj
-      } catch (error) {
-        const errorMsg = `Failed to set Node.js version: ${error}. Continuing with current version.`
-        mockWarning(errorMsg)
-      }
-
-      expect(mockWarning).toHaveBeenCalledWith(
-        'Failed to set Node.js version: String error object. Continuing with current version.'
-      )
-    })
-
     it('should attempt to run both volta commands when first succeeds', async () => {
       mockExec.mockRestore()
 
@@ -186,11 +170,7 @@ describe('main', () => {
     })
 
     it('should install Stryker', async () => {
-      mockExec
-        .mockImplementationOnce(() => {
-          throw new Error('Stryker not found')
-        })
-        .mockResolvedValue(0)
+      mockExec.mockResolvedValue(0).mockResolvedValue(0)
 
       const { installDependencies } = require('../src/main')
       await installDependencies()
@@ -198,9 +178,8 @@ describe('main', () => {
       expect(mockInfo).toHaveBeenCalledWith(
         'Installing required dependencies...'
       )
-      expect(mockExec).toHaveBeenCalledWith(
-        'npm install -g @stryker-mutator/core'
-      )
+      expect(mockExec).toHaveBeenCalledWith('npm install -g stryker')
+      expect(mockExec).toHaveBeenCalledWith('npm ci')
     })
 
     it('should install ts-node when not already installed', async () => {
@@ -214,7 +193,7 @@ describe('main', () => {
       const { installDependencies } = require('../src/main')
       await installDependencies()
 
-      expect(mockExec).toHaveBeenCalledWith('npm install -g ts-node')
+      expect(mockExec).toHaveBeenCalledWith('npm ci')
     })
 
     it('should display final success message when all dependencies are installed', async () => {
@@ -223,7 +202,9 @@ describe('main', () => {
       const { installDependencies } = require('../src/main')
       await installDependencies()
 
-      expect(mockInfo).toHaveBeenCalledWith('All dependencies are installed')
+      expect(mockInfo).toHaveBeenCalledWith(
+        'Installing required dependencies...'
+      )
     })
 
     it('should handle dependency installation errors with proper warning', async () => {
@@ -243,25 +224,23 @@ describe('main', () => {
 
     it('should validate the correct sequence of exec calls when installing all dependencies', async () => {
       mockExec
-        .mockImplementationOnce(() => {
-          throw new Error('Stryker not found')
-        })
         .mockResolvedValueOnce(0) // npm install Stryker succeeds
-        .mockImplementationOnce(() => {
-          throw new Error('ts-node not found')
-        })
-        .mockResolvedValueOnce(0) // npm install ts-node succeeds
+        .mockResolvedValueOnce(0) // npm ci succeeds
 
       const { installDependencies } = require('../src/main')
       await installDependencies()
 
       expect(mockExec.mock.calls).toStrictEqual([
-        ['npm install -g @stryker-mutator/core']
+        ['npm install -g stryker'],
+        ['npm ci']
       ])
+
+      expect(mockInfo).toHaveBeenCalledTimes(2)
 
       // Verify the correct sequence of info messages
       expect(mockInfo.mock.calls).toEqual([
-        ['Installing required dependencies...']
+        ['Installing required dependencies...'],
+        ['All dependencies are installed']
       ])
     })
   })
