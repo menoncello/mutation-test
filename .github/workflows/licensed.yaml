@@ -1,3 +1,4 @@
+---
 # This workflow checks the statuses of cached dependencies used in this action
 # with the help of the Licensed tool. If any licenses are invalid or missing,
 # this workflow will fail. See: https://github.com/licensee/licensed
@@ -30,15 +31,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        id: setup-node
-        uses: actions/setup-node@v4
+        uses: ./.github/workflows/reusable/setup-node.yaml
         with:
           node-version-file: .node-version
-          cache: npm
-
-      - name: Install Dependencies
-        id: npm-ci
-        run: npm ci
 
       - name: Setup Ruby
         id: setup-ruby

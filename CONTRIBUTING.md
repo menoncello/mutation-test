@@ -1,10 +1,15 @@
+---
+
 # Contributing to Mutation Test Action
 
-Thank you for your interest in contributing to the Mutation Test Action! This document provides guidelines and instructions for contributing to this project.
+Thank you for your interest in contributing to the Mutation Test Action! This
+document provides guidelines and instructions for contributing to this project.
 
 ## Code of Conduct
 
-Please be respectful and considerate of others when contributing to this project. We are committed to providing a welcoming and inclusive environment for everyone.
+Please be respectful and considerate of others when contributing to this
+project. We are committed to providing a welcoming and inclusive environment for
+everyone.
 
 ## Getting Started
 
@@ -32,14 +37,16 @@ Please be respectful and considerate of others when contributing to this project
 
 ## Testing
 
-We use Jest for unit testing and Stryker for mutation testing. Please add tests for any new features or bug fixes.
+We use Jest for unit testing and Stryker for mutation testing. Please add tests
+for any new features or bugfixes.
 
 - Run unit tests: `npm test`
 - Run mutation tests: `npm run test:mutation`
 
 ## Code Style
 
-We use ESLint and Prettier to enforce code style. Before submitting a PR, please run:
+We use ESLint and Prettier to enforce code style. Before submitting a PR, please
+run:
 
 ```bash
 npm run format:write
@@ -48,21 +55,28 @@ npm run lint
 
 ## Documentation Requirements
 
-When creating or modifying features, you **must** include appropriate documentation:
+When creating or modifying features, you **must** include appropriate
+documentation:
 
 1. Update any relevant documentation files in the `/docs` directory
 2. Add JSDoc comments to any new code or modified functions
-3. Update the README.md if your changes affect how users interact with the action
+3. Update the README.md if your changes affect how users interact with the
+   action
 4. Include examples of how to use new features in your PR description
-5. If you're adding new inputs or outputs to the action, update the `action.yml` file documentation
+5. If you're adding new inputs or outputs to the action, update the
+   `action.yaml` file documentation
 
-Documentation should be clear, concise, and written in English. Remember that good documentation is as important as good code!
+Documentation should be clear, concise, and written in English. Remember that
+good documentation is as important as good code!
 
 ## Commit Messages
 
-We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification for commit messages. This helps keep the commit history clean and generates better changelogs.
+We follow the [Conventional Commits](https://www.conventionalcommits.org/)
+specification for commit messages. This helps keep the commit history clean and
+generates better changelogs.
 
 Examples:
+
 - `feat: add support for TypeScript 5.0`
 - `fix: handle edge case in mutation score calculation`
 - `docs: update README with new examples`
@@ -80,11 +94,14 @@ When submitting a pull request:
 
 ## Feature Requests
 
-If you have a feature request, please open an issue with the "Feature Request" template and describe the feature you'd like to see, why it would be valuable, and how it might work.
+If you have a feature request, please open an issue with the "Feature Request"
+template and describe the feature you'd like to see, why it would be valuable,
+and how it might work.
 
 ## Bug Reports
 
-If you find a bug, please open an issue with the "Bug Report" template and include:
+If you find a bug, please open an issue with the "Bug Report" template and
+include:
 
 1. A clear description of the bug
 2. Steps to reproduce
@@ -94,4 +111,5 @@ If you find a bug, please open an issue with the "Bug Report" template and inclu
 
 ## License
 
-By contributing to this project, you agree that your contributions will be licensed under the project's [MIT License](LICENSE).
+By contributing to this project, you agree that your contributions will be
+licensed under the project's [MIT License](LICENSE).

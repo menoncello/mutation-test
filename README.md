@@ -1,22 +1,33 @@
+---
+
 # Mutation Test Action
 
-[![GitHub Super-Linter](https://github.com/actions/typescript-action/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
-![CI](https://github.com/actions/typescript-action/actions/workflows/ci.yml/badge.svg)
-[![Check dist/](https://github.com/actions/typescript-action/actions/workflows/check-dist.yml/badge.svg)](https://github.com/actions/typescript-action/actions/workflows/check-dist.yml)
-[![CodeQL](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yml)
+[![GitHub Super-Linter](https://github.com/actions/typescript-action/actions/workflows/linter.yaml/badge.svg)](https://github.com/super-linter/super-linter)
+![CI](https://github.com/actions/typescript-action/actions/workflows/ci.yaml/badge.svg)
+[![Check dist/](https://github.com/actions/typescript-action/actions/workflows/check-dist.yaml/badge.svg)](https://github.com/actions/typescript-action/actions/workflows/check-dist.yaml)
+[![CodeQL](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yaml/badge.svg)](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yaml)
 [![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
 
 A GitHub Action to enforce mutation testing quality in your CI/CD pipeline.
 
 ## Overview
 
-Mutation Test Action runs mutation testing on your codebase and ensures that your mutation score doesn't decrease over time. This helps maintain and improve the quality of your test suite by identifying areas where your tests fail to detect potential bugs.
+Mutation Test Action runs mutation testing on your codebase and ensures that
+your mutation score doesn't decrease over time. This helps maintain and improve
+the quality of your test suite by identifying areas where your tests fail to
+detect potential bugs.
 
 ## What is Mutation Testing?
 
-Mutation testing is a technique used to evaluate the effectiveness of your test suite. It works by introducing small changes (mutations) to your source code and then running your tests against these mutated versions. If your tests fail when run against a mutation, that mutation is "killed". The percentage of killed mutations out of the total mutations generated is your mutation score.
+Mutation testing is a technique used to evaluate the effectiveness of your test
+suite. It works by introducing small changes (mutations) to your source code and
+then running your tests against these mutated versions. If your tests fail when
+run against a mutation, that mutation is "killed". The percentage of killed
+mutations out of the total mutations generated is your mutation score.
 
-A high mutation score indicates that your tests are effective at detecting potential bugs, while a low score suggests that your test suite might miss certain issues.
+A high mutation score indicates that your tests are effective at detecting
+potential bugs, while a low score suggests that your test suite might miss
+certain issues.
 
 ## Features
 
@@ -25,6 +36,7 @@ A high mutation score indicates that your tests are effective at detecting poten
 - Fails the build if the mutation score decreases
 - Provides detailed metrics on mutation test results
 - Configurable Node.js version support
+- Automated CI/CD workflows with version bumping and artifact creation
 
 ## Installation
 
@@ -35,16 +47,16 @@ name: Mutation Testing
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   mutation-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Run Mutation Tests
         uses: your-username/mutation-test-action@v1
         with:
@@ -53,9 +65,9 @@ jobs:
 
 ## Inputs
 
-| Input | Description | Required | Default |
-|-------|-------------|----------|---------|
-| `node-version` | Node.js version to use | No | '20' |
+| Input          | Description            | Required | Default |
+| -------------- | ---------------------- | -------- | ------- |
+| `node-version` | Node.js version to use | No       | '20'    |
 
 ## Outputs
 
@@ -83,6 +95,33 @@ The action creates the following files:
 - Total number of mutants
 - List of mutated files
 - Timestamp of the test run
+
+## CI/CD Workflows
+
+This project includes comprehensive CI/CD workflows:
+
+### Continuous Integration (PR Validation)
+
+When a PR is opened or updated, the CI workflow automatically:
+
+- Runs TypeScript tests and mutation tests
+- Performs code linting
+- Validates the bundled distribution files
+- Checks if the action works correctly
+
+### Deployment (PR Merge)
+
+When a PR is merged, the deployment workflow automatically:
+
+- Validates code quality with tests and linting
+- Runs mutation tests and generates reports
+- Bumps version numbers based on commit history
+- Updates mutation metrics
+- Creates a new versioned release
+- Deploys the bundled files as artifacts
+
+For detailed information about the workflows, see
+[CI/CD Documentation](./docs/CICD.md).
 
 ## Development
 

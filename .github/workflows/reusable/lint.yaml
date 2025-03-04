@@ -1,0 +1,38 @@
+---
+name: Lint Code
+on:
+  workflow_call:
+    inputs:
+      fetch-depth:
+        required: false
+        default: 0
+        type: number
+        description: 'Fetch depth for checkout'
+      node-version:
+        required: false
+        default: '20'
+        type: string
+        description: 'Node version to use'
+
+jobs:
+  lint:
+    name: Lint Codebase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ inputs.fetch-depth }}
+
+      - name: Setup Node.js
+        uses: ./.github/workflows/reusable/setup-node.yaml
+        with:
+          node-version-file: ${{ inputs.node-version }}
+
+      - name: Lint Codebase
+        id: super-linter
+        uses: super-linter/super-linter/slim@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINTER_RULES_PATH: ${{ github.workspace }}
