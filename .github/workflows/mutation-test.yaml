@@ -67,7 +67,7 @@ jobs:
         if: ${{ inputs.upload-metrics }}
         env:
           BASE_URL: 'https://dashboard.stryker-mutator.io'
-          PROJECT: ${{ github.repository }}
+          PROJECT: 'github.com/${{ github.repository }}'
           VERSION: ${{ github.sha }}
           API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
         run: |
