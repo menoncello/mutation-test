@@ -1,4 +1,3 @@
----
 name: Continuous Integration
 
 on:
@@ -19,16 +18,52 @@ permissions:
 jobs:
   test-typescript:
     name: TypeScript Tests
-    uses: ./.github/workflows/typescript-test.yaml
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: TypeScript Tests
+        uses: ./.github/workflows/typescript-test.yaml
 
   lint:
-    name: Lint Codebase
-    uses: ./.github/workflows/lint.yaml
+    name: TypeScript Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lint Codebase
+        uses: ./.github/workflows/lint.yaml
 
   check-dist:
-    name: Check dist/
-    uses: ./.github/workflows/check-dist.yaml
+    name: TypeScript Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check dist/
+        uses: ./.github/workflows/check-dist.yaml
 
   test-action:
-    name: GitHub Actions Test
-    uses: ./.github/workflows/mutation-test.yaml
+    name: TypeScript Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: GitHub Actions Test
+        uses: ./.github/workflows/mutation-test.yaml

@@ -1,18 +1,15 @@
----
 name: Check dist/ Directory
 on:
   workflow_call:
     inputs:
-      depends-on:
-        required: false
-        type: boolean
-        default: false
-        description: 'Whether this job should depend on other jobs'
       node-version:
         required: false
         default: '20'
         type: string
         description: 'Node version to use'
+
+permissions:
+  contents: read
 
 jobs:
   check-dist:
@@ -22,6 +19,8 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: ./.github/workflows/setup-node.yaml

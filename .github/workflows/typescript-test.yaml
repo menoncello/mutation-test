@@ -1,22 +1,20 @@
----
 name: TypeScript Tests
 on:
   workflow_call:
-    outputs:
-      test-status:
-        description: 'Status of the tests'
-        value: ${{ jobs.test.outputs.status }}
+
+permissions:
+  contents: read
 
 jobs:
   test:
     name: Run TypeScript Tests
     runs-on: ubuntu-latest
-    outputs:
-      status: ${{ steps.set-output.outputs.status }}
     steps:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: ./.github/workflows/setup-node.yaml
@@ -24,21 +22,13 @@ jobs:
           node-version-file: '20'
 
       - name: Check Format
-        id: npm-format-check
         run: npm run format:check
 
       - name: Lint
-        id: npm-lint
         run: npm run lint
 
       - name: Test
-        id: npm-ci-test
         run: npm run ci-test
 
       - name: Mutation Test
-        id: npm-mutation-test
         run: npm run test:mutation
-
-      - name: Set Output
-        id: set-output
-        run: echo "status=success" >> $GITHUB_OUTPUT

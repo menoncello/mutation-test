@@ -1,5 +1,3 @@
----
-
 # Action Configuration Reference
 
 This document provides detailed information about configuring the Mutation Test
@@ -102,7 +100,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run Mutation Tests
-        uses: your-username/mutation-test-action@v1
+        uses: menoncello/mutation-test-action@v0
         with:
           node-version: '20' # Optional, defaults to '20'
 ```
@@ -137,7 +135,7 @@ jobs:
 
       - name: Run Mutation Tests
         id: mutation
-        uses: your-username/mutation-test-action@v1
+        uses: menoncello/mutation-test-action@v0
 
       - name: Upload Mutation Report
         uses: actions/upload-artifact@v3

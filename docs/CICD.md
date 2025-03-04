@@ -1,5 +1,3 @@
----
-
 # CI/CD Workflows Documentation
 
 This document details the Continuous Integration and Continuous Deployment

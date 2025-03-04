@@ -1,4 +1,3 @@
----
 name: Deploy
 
 on:
@@ -11,28 +10,67 @@ on:
       - closed
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   test-typescript:
     name: TypeScript Tests
-    uses: ./.github/workflows/typescript-test.yaml
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: TypeScript Tests
+        uses: ./.github/workflows/typescript-test.yaml
 
   lint:
-    name: Lint Codebase
-    uses: ./.github/workflows/lint.yaml
+    name: Lint Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lint Codebase
+        uses: ./.github/workflows/lint.yaml
 
   check-dist:
-    name: Check dist/
-    uses: ./.github/workflows/check-dist.yaml
+    name: Check dist
+    runs-on: ubuntu-latest
     needs: [lint, test-typescript]
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+        with:
+          fetch-depth: 0
+      - name: Check dist/
+        uses: ./.github/workflows/check-dist.yaml
 
   mutation-test:
-    name: GitHub Actions Test
+    name: Mutation Test
     needs: [check-dist]
-    uses: ./.github/workflows/mutation-test.yaml
-    with:
-      upload-artifacts: true
+    runs-on: ubuntu-latest
+    outputs:
+      mutation_metrics: ${{ steps.test-action.outputs.mutation_metrics }}
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: GitHub Actions Test
+        uses: ./.github/workflows/mutation-test.yaml
+        id: test-action
+        with:
+          upload-artifacts: true
 
   bump-version:
     name: Bump Version
@@ -67,16 +105,17 @@ jobs:
 
           # Update the version in package.json without creating a commit
           echo "Bump version to $new_version"
-          npm version $new_version --no-git-tag-version
+          npm version "$new_version" --no-git-tag-version
 
           # Update mutation metrics
-          echo ${{ needs.mutation-test.outputs.mutation_metrics }} > mutation-metrics.json
+          metrics="${{ needs.mutation-test.outputs.mutation_metrics }}"
+          echo "$metrics" > mutation-metrics.json
           cat mutation.txt
 
           # Create a commit with the new version 
           git add package.json package-lock.json mutation.txt
           git commit --no-verify -m "chore: bump version to $new_version"
-          git tag $new_version
+          git tag "$new_version"
 
           # Push changes
           echo "Version updated to $new_version"
@@ -91,6 +130,8 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: ./.github/workflows/setup-node.yaml
