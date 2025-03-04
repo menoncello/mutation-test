@@ -30,6 +30,8 @@ jobs:
     name: Mutation Test
     needs: [check-dist]
     uses: ./.github/workflows/mutation-test.yaml
+    with:
+      upload-metrics: true
 
   bump-version:
     name: Bump Version
@@ -89,6 +91,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node

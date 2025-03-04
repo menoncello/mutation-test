@@ -33,13 +33,12 @@
     "package:watch": "npm run package -- --watch",
     "test": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 npx jest",
     "test:mutation": "stryker run --inPlace || rm -rf stryker-tmp",
-    "test:mutation:no-dashboard": "stryker run --reporters clear-text,progress,dots,html,json --inPlace || rm -rf stryker-tmp",
     "get:mutation-metrics": "node script/get-mutation-metrics.js",
     "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package",
     "prepare": "husky",
     "commitlint": "commitlint --config commitlint.config.json --edit",
     "next-preview": "node -e \"const semver = require('semver'); const current = require('./package.json').version; let next; if (semver.prerelease(current) && semver.prerelease(current)[0] === 'preview') { next = semver.inc(current, 'prerelease', 'preview'); } else { next = semver.inc(current, 'minor') + '-preview.1'; } console.log(next);\"",
-    "super-lint": "docker run -e RUN_LOCAL=true --env-file .github/super-linter.env -v ./:/tmp/lint --rm ghcr.io/super-linter/super-linter:latest"
+    "super-linter": "docker run -e RUN_LOCAL=true --env-file .github/super-linter.env -v ./:/tmp/lint --rm ghcr.io/super-linter/super-linter:latest"
   },
   "license": "MIT",
   "dependencies": {

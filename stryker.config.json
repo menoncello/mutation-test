@@ -7,7 +7,7 @@
   "typescriptChecker": {
     "prioritizePerformanceOverAccuracy": true
   },
-  "reporters": ["html", "json", "clear-text", "progress", "dashboard"],
+  "reporters": ["html", "json", "clear-text", "progress"],
   "clearTextReporter": {
     "logTests": true,
     "reportMutants": true,

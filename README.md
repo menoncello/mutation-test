@@ -1,10 +1,10 @@
 # Mutation Test Action
 
-[![GitHub Super-Linter](https://github.com/actions/typescript-action/actions/workflows/linter.yaml/badge.svg)](https://github.com/super-linter/super-linter)
-![CI](https://github.com/actions/typescript-action/actions/workflows/ci.yaml/badge.svg)
-[![Check dist/](https://github.com/actions/typescript-action/actions/workflows/check-dist.yaml/badge.svg)](https://github.com/actions/typescript-action/actions/workflows/check-dist.yaml)
-[![CodeQL](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yaml/badge.svg)](https://github.com/actions/typescript-action/actions/workflows/codeql-analysis.yaml)
+[![CI](https://github.com/menoncello/mutation-test/actions/workflows/ci.yaml/badge.svg)](https://github.com/menoncello/mutation-test/actions/workflows/ci.yaml)
+[![Deploy](https://github.com/menoncello/mutation-test/actions/workflows/deploy.yaml/badge.svg)](https://github.com/menoncello/mutation-test/actions/workflows/deploy.yaml)
 [![Coverage](./badges/coverage.svg)](./badges/coverage.svg)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fmenoncello%2Fauth-endpoint%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/menoncello/auth-endpoint/main)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/fcf2b37a6895446a9d6e83cf83b058c3)](https://app.codacy.com/gh/menoncello/mutation-test/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 A GitHub Action to enforce mutation testing quality in your CI/CD pipeline.
 
