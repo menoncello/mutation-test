@@ -12,6 +12,11 @@ on:
         default: false
         type: boolean
         description: 'Whether to upload mutation reports as artifacts'
+      upload-metrics:
+        required: false
+        default: false
+        type: boolean
+        description: 'Whether to upload mutation metrics to stryker dashboard'
     outputs:
       mutation_metrics:
         description: 'Mutation metrics output'
@@ -57,3 +62,18 @@ jobs:
             mutation-report.html
             mutation-report.json
             mutation-metrics.json
+
+      - name: Upload mutation metrics
+        if: ${{ inputs.upload-metrics }}
+        env:
+          BASE_URL: 'https://dashboard.stryker-mutator.io'
+          PROJECT: ${{ github.repository }}
+          VERSION: ${{ github.sha }}
+          API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+        run: |
+          curl -X PUT \
+            $BASE_URL$/api/reports/$PROJECT$/$VERSION$ \
+            -H 'Content-Type: application/json' \
+            -H 'Host: dashboard.stryker-mutator.io' \
+            -H 'X-Api-Key: $API_KEY$' \
+            -d @mutation-testing-report.json
