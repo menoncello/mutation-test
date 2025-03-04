@@ -26,7 +26,7 @@ jobs:
           fetch-depth: ${{ inputs.fetch-depth }}
 
       - name: Setup Node.js
-        uses: ./.github/workflows/reusable/setup-node.yaml
+        uses: ./.github/workflows/setup-node.yaml
         with:
           node-version-file: ${{ inputs.node-version }}
 

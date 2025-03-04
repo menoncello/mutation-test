@@ -16,21 +16,21 @@ permissions:
 jobs:
   test-typescript:
     name: TypeScript Tests
-    uses: ./.github/workflows/reusable/typescript-test.yaml
+    uses: ./.github/workflows/typescript-test.yaml
 
   lint:
     name: Lint Codebase
-    uses: ./.github/workflows/reusable/lint.yaml
+    uses: ./.github/workflows/lint.yaml
 
   check-dist:
     name: Check dist/
-    uses: ./.github/workflows/reusable/check-dist.yaml
+    uses: ./.github/workflows/check-dist.yaml
     needs: [lint, test-typescript]
 
   mutation-test:
     name: GitHub Actions Test
     needs: [check-dist]
-    uses: ./.github/workflows/reusable/mutation-test.yaml
+    uses: ./.github/workflows/mutation-test.yaml
     with:
       upload-artifacts: true
 
@@ -46,7 +46,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: ./.github/workflows/reusable/setup-node.yaml
+        uses: ./.github/workflows/setup-node.yaml
         with:
           node-version-file: .node-version
 
@@ -93,7 +93,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: ./.github/workflows/reusable/setup-node.yaml
+        uses: ./.github/workflows/setup-node.yaml
         with:
           node-version-file: .node-version
 
