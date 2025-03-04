@@ -50,7 +50,7 @@ inputs:
 #### Available Inputs
 
 | Input          | Description                                           | Required | Default |
-|----------------|-------------------------------------------------------|----------|---------|
+| -------------- | ----------------------------------------------------- | -------- | ------- |
 | `node-version` | Node.js version to use for running the mutation tests | No       | '20'    |
 
 ### Outputs
@@ -66,7 +66,7 @@ outputs:
 #### Available Outputs
 
 | Output             | Description                                      |
-|--------------------|--------------------------------------------------|
+| ------------------ | ------------------------------------------------ |
 | `mutation_metrics` | JSON object containing detailed mutation metrics |
 
 ### Runtime Configuration
@@ -89,9 +89,9 @@ name: Mutation Testing
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   mutation-test:
@@ -112,9 +112,9 @@ name: Mutation Testing
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   mutation-test:
