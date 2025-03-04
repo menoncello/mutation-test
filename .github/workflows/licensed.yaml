@@ -31,8 +31,6 @@ jobs:
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
-        with:
-          node-version-file: .node-version
 
       - name: Setup Ruby
         id: setup-ruby

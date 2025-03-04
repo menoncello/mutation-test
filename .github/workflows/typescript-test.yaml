@@ -18,8 +18,6 @@ jobs:
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
-        with:
-          node-version-file: '20'
 
       - name: Check Format
         run: npm run format:check

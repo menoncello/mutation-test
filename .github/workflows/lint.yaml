@@ -29,8 +29,6 @@ jobs:
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
-        with:
-          node-version-file: ${{ inputs.node-version }}
 
       - name: Lint Codebase
         id: super-linter

@@ -44,8 +44,6 @@ jobs:
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
-        with:
-          node-version-file: .node-version
 
       - name: Configure Git
         shell: bash
@@ -94,8 +92,6 @@ jobs:
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
-        with:
-          node-version-file: .node-version
 
       - name: Build dist/ Directory
         id: build
