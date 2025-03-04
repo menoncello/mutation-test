@@ -18,7 +18,7 @@ permissions:
 jobs:
   test-typescript:
     name: TypeScript Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         id: checkout
@@ -31,7 +31,7 @@ jobs:
 
   lint:
     name: TypeScript Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         id: checkout
@@ -44,7 +44,7 @@ jobs:
 
   check-dist:
     name: TypeScript Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         id: checkout
@@ -57,7 +57,7 @@ jobs:
 
   test-action:
     name: TypeScript Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         id: checkout
