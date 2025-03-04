@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: ./.github/workflows/setup-node.yaml
+        uses: menoncello/mutant-test/.github/workflows/setup-node.yaml@develop
         with:
           node-version-file: '20'
 
