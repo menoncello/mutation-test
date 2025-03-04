@@ -21,13 +21,13 @@ jobs:
     uses: ./.github/workflows/typescript-test.yaml
 
   lint:
-    name: TypeScript Tests
+    name: Lint Code
     uses: ./.github/workflows/lint.yaml
 
   check-dist:
-    name: TypeScript Tests
+    name: Check dist
     uses: ./.github/workflows/check-dist.yaml
 
   test-action:
-    name: TypeScript Tests
+    name: Mutation Test
     uses: ./.github/workflows/mutation-test.yaml
