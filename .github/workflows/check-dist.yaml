@@ -8,6 +8,11 @@ on:
         type: boolean
         default: false
         description: 'Whether this job should depend on other jobs'
+      node-version:
+        required: false
+        default: '20'
+        type: string
+        description: 'Node version to use'
 
 jobs:
   check-dist:
@@ -19,9 +24,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: ./.github/workflows/reusable/setup-node.yaml
+        uses: ./.github/workflows/setup-node.yaml
         with:
-          node-version-file: .node-version
+          node-version-file: ${{ inputs.node-version }}
 
       - name: Build dist/ Directory
         id: build
