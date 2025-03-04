@@ -1,3 +1,5 @@
+---
+
 # Technical Documentation
 
 This document provides technical details about how the Mutation Test Action
@@ -42,7 +44,7 @@ architecture with the following key components:
 
 ### Detailed Flow in MutationRunner
 
-```
+```text
 MutationRunner.run()
   ├── Read previous mutation metrics
   ├── Validate metrics

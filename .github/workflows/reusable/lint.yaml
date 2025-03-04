@@ -1,3 +1,4 @@
+---
 name: Lint Code
 on:
   workflow_call:
@@ -7,6 +8,11 @@ on:
         default: 0
         type: number
         description: 'Fetch depth for checkout'
+      node-version:
+        required: false
+        default: '20'
+        type: string
+        description: 'Node version to use'
 
 jobs:
   lint:
@@ -22,7 +28,7 @@ jobs:
       - name: Setup Node.js
         uses: ./.github/workflows/reusable/setup-node.yaml
         with:
-          node-version-file: .node-version
+          node-version-file: ${{ inputs.node-version }}
 
       - name: Lint Codebase
         id: super-linter

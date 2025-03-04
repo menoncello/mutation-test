@@ -1,3 +1,4 @@
+---
 name: TypeScript Tests
 on:
   workflow_call:

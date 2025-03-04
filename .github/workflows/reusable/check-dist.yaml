@@ -1,3 +1,4 @@
+---
 name: Check dist/ Directory
 on:
   workflow_call:

@@ -1,3 +1,5 @@
+---
+
 # Mutation Test Action
 
 [![GitHub Super-Linter](https://github.com/actions/typescript-action/actions/workflows/linter.yaml/badge.svg)](https://github.com/super-linter/super-linter)

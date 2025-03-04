@@ -1,3 +1,5 @@
+---
+
 # CI/CD Workflows Documentation
 
 This document details the Continuous Integration and Continuous Deployment
@@ -61,20 +63,12 @@ File: `.github/workflows/deploy.yaml`
 This workflow triggers when pull requests are closed (merged) against the
 `main`, `develop`, or `release/**` branches.
 
-### Jobs
+### Jobs on Deploy
 
-#### 1. TypeScript Tests
+#### 1-3. TypeScript Tests
 
-Identical to the CI workflow's TypeScript tests job.
-
-#### 2. Lint Codebase
-
-Identical to the CI workflow's Lint Codebase job.
-
-#### 3. Check dist/
-
-Similar to the CI workflow's Check dist/ job, but runs after the Lint and
-TypeScript Tests jobs have completed successfully.
+Identical to the CI workflow's TypeScript tests, Lint Codebase and Check dist/
+job.
 
 #### 4. Mutation Test
 

@@ -1,3 +1,5 @@
+---
+
 # Action Configuration Reference
 
 This document provides detailed information about configuring the Mutation Test

@@ -1,3 +1,5 @@
+---
+
 # Contributing to Mutation Test Action
 
 Thank you for your interest in contributing to the Mutation Test Action! This
@@ -36,7 +38,7 @@ everyone.
 ## Testing
 
 We use Jest for unit testing and Stryker for mutation testing. Please add tests
-for any new features or bug fixes.
+for any new features or bugfixes.
 
 - Run unit tests: `npm test`
 - Run mutation tests: `npm run test:mutation`
