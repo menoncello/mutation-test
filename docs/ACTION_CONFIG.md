@@ -50,7 +50,7 @@ inputs:
 #### Available Inputs
 
 | Input          | Description                                           | Required | Default |
-| -------------- | ----------------------------------------------------- | -------- | ------- |
+|----------------|-------------------------------------------------------|----------|---------|
 | `node-version` | Node.js version to use for running the mutation tests | No       | '20'    |
 
 ### Outputs
@@ -66,7 +66,7 @@ outputs:
 #### Available Outputs
 
 | Output             | Description                                      |
-| ------------------ | ------------------------------------------------ |
+|--------------------|--------------------------------------------------|
 | `mutation_metrics` | JSON object containing detailed mutation metrics |
 
 ### Runtime Configuration
@@ -89,9 +89,9 @@ name: Mutation Testing
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   mutation-test:
@@ -100,7 +100,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run Mutation Tests
-        uses: your-username/mutation-test-action@v1
+        uses: menoncello/mutation-test-action@v0
         with:
           node-version: '20' # Optional, defaults to '20'
 ```
@@ -112,9 +112,9 @@ name: Mutation Testing
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   mutation-test:
@@ -135,7 +135,7 @@ jobs:
 
       - name: Run Mutation Tests
         id: mutation
-        uses: your-username/mutation-test-action@v1
+        uses: menoncello/mutation-test-action@v0
 
       - name: Upload Mutation Report
         uses: actions/upload-artifact@v3
