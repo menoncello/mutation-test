@@ -2,10 +2,6 @@
 name: TypeScript Tests
 on:
   workflow_call:
-    outputs:
-      test-status:
-        description: 'Status of the tests'
-        value: ${{ jobs.test.outputs.status }}
 
 permissions:
   contents: read
