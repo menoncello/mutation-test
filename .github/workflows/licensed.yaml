@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: menoncello/mutant-test/.github/workflows/setup-node.yaml@develop
+        uses: ./.github/actions/setup-node
         with:
           node-version-file: .node-version
 
