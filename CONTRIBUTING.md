@@ -1,5 +1,3 @@
----
-
 # Contributing to Mutation Test Action
 
 Thank you for your interest in contributing to the Mutation Test Action! This

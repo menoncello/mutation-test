@@ -1,5 +1,3 @@
----
-
 # Technical Documentation
 
 This document provides technical details about how the Mutation Test Action

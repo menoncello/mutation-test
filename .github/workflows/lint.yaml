@@ -14,17 +14,14 @@ on:
         type: string
         description: 'Node version to use'
 
+permissions:
+  contents: read
+
 jobs:
   lint:
     name: Lint Codebase
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: ${{ inputs.fetch-depth }}
-
       - name: Setup Node.js
         uses: ./.github/workflows/setup-node.yaml
         with:

@@ -18,6 +18,9 @@ on:
         description: 'Mutation metrics output'
         value: ${{ jobs.mutation-test.outputs.mutation_metrics }}
 
+permissions:
+  contents: read
+
 jobs:
   mutation-test:
     name: GitHub Actions Mutation Test
@@ -25,10 +28,6 @@ jobs:
     outputs:
       mutation_metrics: ${{ steps.test-action.outputs.mutation_metrics }}
     steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: ./.github/workflows/setup-node.yaml
         with:

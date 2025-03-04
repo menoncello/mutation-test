@@ -9,6 +9,9 @@ on:
         type: string
         description: 'Path to the file containing the Node.js version'
 
+permissions:
+  contents: read
+
 jobs:
   setup:
     name: Setup Node.js

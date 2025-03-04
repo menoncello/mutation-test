@@ -1,10 +1,16 @@
 ---
 extends: default
 
+# See: https://yamllint.readthedocs.io/en/stable/
 rules:
+  document-end: disable
+  document-start: disable
   line-length:
-    max: 120
     level: warning
+    max: 80
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+  bracket-spacing: 1
   truthy:
     allowed-values: ['true', 'false', 'on', 'off', 'yes', 'no']
 
@@ -13,4 +19,3 @@ ignore: |
   coverage/
   node_modules/
   stryker-tmp/
-  .licenses/
