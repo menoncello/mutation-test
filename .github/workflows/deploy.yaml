@@ -67,10 +67,10 @@ jobs:
           # Update mutation metrics
           metrics="${{ needs.mutation-test.outputs.mutation_metrics }}"
           echo "$metrics" > mutation-metrics.json
-          cat mutation.txt
+          cat mutation-metrics.json
 
           # Create a commit with the new version 
-          git add package.json package-lock.json mutation.txt
+          git add package.json package-lock.json mutation-metrics.json
           git commit --no-verify -m "chore: bump version to $new_version"
           git tag "$new_version"
 
