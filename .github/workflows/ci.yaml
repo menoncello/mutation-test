@@ -18,52 +18,16 @@ permissions:
 jobs:
   test-typescript:
     name: TypeScript Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: TypeScript Tests
-        uses: menoncello/mutant-test/.github/workflows/typescript-test.yaml@develop
+    uses: ./.github/workflows/typescript-test.yaml
 
   lint:
-    name: TypeScript Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Lint Codebase
-        uses: menoncello/mutant-test/.github/workflows/lint.yaml
+    name: Lint Code
+    uses: ./.github/workflows/lint.yaml
 
   check-dist:
-    name: TypeScript Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Check dist/
-        uses: menoncello/mutant-test/.github/workflows/check-dist.yaml
+    name: Check dist
+    uses: ./.github/workflows/check-dist.yaml
 
   test-action:
-    name: TypeScript Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: GitHub Actions Test
-        uses: menoncello/mutant-test/.github/workflows/mutation-test.yaml
+    name: Mutation Test
+    uses: ./.github/workflows/mutation-test.yaml

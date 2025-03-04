@@ -1,12 +1,6 @@
 name: Check dist/ Directory
 on:
   workflow_call:
-    inputs:
-      node-version:
-        required: false
-        default: '20'
-        type: string
-        description: 'Node version to use'
 
 permissions:
   contents: read
@@ -23,9 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: menoncello/mutant-test/.github/workflows/setup-node.yaml@develop
-        with:
-          node-version-file: ${{ inputs.node-version }}
+        uses: ./.github/actions/setup-node
 
       - name: Build dist/ Directory
         id: build

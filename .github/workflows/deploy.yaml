@@ -15,62 +15,21 @@ permissions:
 jobs:
   test-typescript:
     name: TypeScript Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: TypeScript Tests
-        uses: menoncello/mutant-test/.github/workflows/typescript-test.yaml@develop
+    uses: ./.github/workflows/typescript-test.yaml
 
   lint:
     name: Lint Code
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Lint Codebase
-        uses: menoncello/mutant-test/.github/workflows/lint.yaml
+    uses: ./.github/workflows/lint.yaml
 
   check-dist:
     name: Check dist
-    runs-on: ubuntu-latest
     needs: [lint, test-typescript]
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-
-        with:
-          fetch-depth: 0
-      - name: Check dist/
-        uses: menoncello/mutant-test/.github/workflows/check-dist.yaml
+    uses: ./.github/workflows/check-dist.yaml
 
   mutation-test:
     name: Mutation Test
     needs: [check-dist]
-    runs-on: ubuntu-latest
-    outputs:
-      mutation_metrics: ${{ steps.test-action.outputs.mutation_metrics }}
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: GitHub Actions Test
-        uses: menoncello/mutant-test/.github/workflows/mutation-test.yaml
-        id: test-action
-        with:
-          upload-artifacts: true
+    uses: ./.github/workflows/mutation-test.yaml
 
   bump-version:
     name: Bump Version
@@ -84,9 +43,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: menoncello/mutant-test/.github/workflows/setup-node.yaml
-        with:
-          node-version-file: .node-version
+        uses: ./.github/actions/setup-node
 
       - name: Configure Git
         shell: bash
@@ -134,9 +91,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: menoncello/mutant-test/.github/workflows/setup-node.yaml
-        with:
-          node-version-file: .node-version
+        uses: ./.github/actions/setup-node
 
       - name: Build dist/ Directory
         id: build

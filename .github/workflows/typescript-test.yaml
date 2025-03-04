@@ -17,9 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: menoncello/mutant-test/.github/workflows/setup-node.yaml@develop
-        with:
-          node-version-file: '20'
+        uses: ./.github/actions/setup-node
 
       - name: Check Format
         run: npm run format:check
