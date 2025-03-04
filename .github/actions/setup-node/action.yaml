@@ -4,7 +4,7 @@ description: 'Installs Node.js and npm'
 inputs:
   node-version-file:
     required: false
-    default: '../../../.node-version'
+    default: .node-version
     description: 'Path to the file containing the Node.js version'
 
 runs:
