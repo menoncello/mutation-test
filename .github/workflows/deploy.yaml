@@ -11,24 +11,57 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
+  check-labels:
+    name: Check PR Labels
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.check-labels.outputs.should_skip }}
+    env:
+      DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+    steps:
+      - name: Check for no-deploy label
+        id: check-labels
+        run: |
+          echo "Checking for no-deploy label on PR #${{ github.event.pull_request.number }}"
+
+          # Get PR labels
+          LABELS=$(curl -s -H "Authorization: token $DEPLOY_KEY" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels" \
+            | jq -r '.[].name')
+
+          # Check if no-deploy label exists
+          if echo "$LABELS" | grep -q "no-deploy"; then
+            echo "PR has no-deploy label, skipping workflow"
+            echo "should_skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "PR does not have no-deploy label, continuing workflow"
+            echo "should_skip=false" >> "$GITHUB_OUTPUT"
+          fi
   test-typescript:
     name: TypeScript Tests
+    needs: check-labels
+    if: needs.check-labels.outputs.should_skip != 'true'
     uses: ./.github/workflows/typescript-test.yaml
 
   lint:
     name: Lint Code
+    needs: check-labels
+    if: needs.check-labels.outputs.should_skip != 'true'
     uses: ./.github/workflows/lint.yaml
 
   check-dist:
     name: Check dist
-    needs: [lint, test-typescript]
+    needs: [check-labels, lint, test-typescript]
+    if: needs.check-labels.outputs.should_skip != 'true'
     uses: ./.github/workflows/check-dist.yaml
 
   mutation-test:
     name: Mutation Test
-    needs: [check-dist]
+    needs: [check-labels, check-dist]
+    if: needs.check-labels.outputs.should_skip != 'true'
     uses: ./.github/workflows/mutation-test.yaml
     with:
       upload-metrics: true
@@ -36,7 +69,11 @@ jobs:
   bump-version:
     name: Bump Version
     runs-on: ubuntu-latest
-    needs: [mutation-test]
+    needs: [check-labels, mutation-test]
+    if: needs.check-labels.outputs.should_skip != 'true'
+    outputs:
+      new_version: ${{ steps.bump-version.outputs.new_version }}
+      branch_name: ${{ steps.bump-version.outputs.branch_name }}
     steps:
       - name: Checkout
         id: checkout
@@ -62,6 +99,7 @@ jobs:
         run: |
           # Obtains the new version
           new_version=v$(npm run next-preview --silent | tail -1)
+          echo "new_version=$new_version" >> "$GITHUB_OUTPUT"
 
           # Update the version in package.json without creating a commit
           echo "Bump version to $new_version"
@@ -72,21 +110,75 @@ jobs:
           echo "$metrics" > mutation-metrics.json
           cat mutation-metrics.json
 
+          # Create a branch for changes
+          BRANCH_NAME="version-bump/$new_version"
+          git checkout -b "$BRANCH_NAME"
+
           # Create a commit with the new version 
           git add package.json package-lock.json mutation-metrics.json
           git commit --no-verify -m "chore: bump version to $new_version"
           git tag "$new_version"
 
-          # Push changes
-          REPOSITORY="${{ github.event.ref }}"
-          echo "Version updated to $new_version in $REPOSITORY"
-          git push -f origin $REPOSITORY
-          git push -f --tags
+          # Push branch and tag
+          git push -f origin "$BRANCH_NAME"
+          git push -f origin "$new_version"
+
+          echo "branch_name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+
+  make-pull-request:
+    name: Create Pull Request
+    runs-on: ubuntu-latest
+    needs: [bump-version]
+    steps:
+      - name: Create Pull Request
+        id: create-pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_VERSION: ${{ needs.bump-version.outputs.new_version }}
+          BRANCH_NAME: ${{ needs.bump-version.outputs.branch_name }}
+          TARGET_BRANCH: ${{ github.event.pull_request.base.ref }}
+        run: |
+          echo "Creating pull request from branch $BRANCH_NAME to $TARGET_BRANCH"
+
+          # Create the pull request
+          PR_URL=$(gh pr create \
+            --title "chore: bump version to $NEW_VERSION" \
+            --body "This PR was automatically created by the deploy workflow to bump the version to $NEW_VERSION.\n\n**Note:** This PR should not trigger the deploy workflow again." \
+            --base "$TARGET_BRANCH" \
+            --head "$BRANCH_NAME" \
+            --repo "${{ github.repository }}")
+
+          PR_NUMBER=$(echo "$PR_URL" | awk -F'/' '{print $NF}')
+          echo "Pull request created: $PR_URL (PR #$PR_NUMBER)"
+
+          # Add labels to the PR
+          gh pr edit "$PR_NUMBER" \
+            --add-label "automated-version-bump,no-deploy" \
+            --repo "${{ github.repository }}"
+
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+
+      - name: Close Pull Request
+        run: |
+          echo "Closing pull request #$PR_NUMBER"
+
+          # Add comment before closing
+          gh pr comment "$PR_NUMBER" \
+            --body "This PR has been automatically closed after successful deployment. The version bump changes have been applied." \
+            --repo "${{ github.repository }}"
+
+          # Close the PR
+          gh pr close "$PR_NUMBER" \
+            --comment "Automated close after successful deployment" \
+            --delete-branch \
+            --repo "${{ github.repository }}"
+
+          echo "Pull request #$PR_NUMBER closed successfully"
 
   deploy:
     name: Deploy dist to Artifacts
     runs-on: ubuntu-latest
-    needs: [bump-version]
+    needs: [make-pull-request]
     steps:
       - name: Checkout
         id: checkout
