@@ -1,7 +1,7 @@
 {
   "name": "mutation-test-action",
   "description": "GitHub Action to check mutation testing metrics",
-  "version": "0.0.0",
+  "version": "0.1.0-preview.1",
   "author": "",
   "private": true,
   "homepage": "https://github.com/actions/typescript-action",
