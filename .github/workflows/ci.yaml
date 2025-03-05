@@ -21,24 +21,26 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_skip: ${{ steps.check-labels.outputs.should_skip }}
+    env:
+      DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
     steps:
       - name: Check for no-deploy label
         id: check-labels
         run: |
           echo "Checking for no-deploy label on PR #${{ github.event.pull_request.number }}"
-          
+
           # Get PR labels
-          LABELS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          LABELS=$(curl -s -H "Authorization: token $DEPLOY_KEY" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels" \
             | jq -r '.[].name')
-          
+
           # Check if no-deploy label exists
           if echo "$LABELS" | grep -q "no-deploy"; then
             echo "PR has no-deploy label, skipping workflow"
-            echo "should_skip=true" >> $GITHUB_OUTPUT
+            echo "should_skip=true" >> "$GITHUB_OUTPUT"
           else
             echo "PR does not have no-deploy label, continuing workflow"
-            echo "should_skip=false" >> $GITHUB_OUTPUT
+            echo "should_skip=false" >> "$GITHUB_OUTPUT"
           fi
 
   test-typescript:
