@@ -40,7 +40,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           ssh-key: ${{ secrets.DEPLOY_KEY }}
@@ -78,8 +78,9 @@ jobs:
           git tag "$new_version"
 
           # Push changes
-          echo "Version updated to $new_version"
-          git push -f origin ${{ github.event.ref }}
+          REPOSITORY="${{ github.event.ref }}"
+          echo "Version updated to $new_version in $REPOSITORY"
+          git push -f origin $REPOSITORY
           git push -f --tags
 
   deploy:
