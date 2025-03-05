@@ -68,11 +68,12 @@ jobs:
         env:
           BASE_URL: 'https://dashboard.stryker-mutator.io'
           PROJECT: 'github.com/${{ github.repository }}'
-          VERSION: ${{ github.sha }}
-          API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+          VERSION: '${{ github.sha }}'
+          API_KEY: '${{ secrets.STRYKER_DASHBOARD_API_KEY }}'
         run: |
+          URL="$BASE_URL/api/reports/$PROJECT/$VERSION"
           curl -X PUT \
-            "$BASE_URL$/api/reports/$PROJECT$/$VERSION$" \
+            "$URL" \
             -H "Content-Type: application/json" \
             -H "Host: dashboard.stryker-mutator.io" \
             -H "X-Api-Key: $API_KEY" \
