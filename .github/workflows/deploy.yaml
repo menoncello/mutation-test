@@ -59,6 +59,7 @@ jobs:
           fi
 
           echo "should_skip=$SHOULD_SKIP" >> "$GITHUB_OUTPUT"
+
   test-typescript:
     name: TypeScript Tests
     needs: check-skip-conditions
@@ -98,7 +99,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          token: ${{ secrets.GH_TOKEN }}
           ref: ${{ github.event.pull_request.base.ref }}
 
       - name: Setup Node.js
