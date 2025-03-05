@@ -71,7 +71,7 @@ jobs:
           VERSION: '${{ github.sha }}'
           API_KEY: '${{ secrets.STRYKER_DASHBOARD_API_KEY }}'
         run: |
-          URL = "$BASE_URL/api/reports/$PROJECT/$VERSION"
+          URL="$BASE_URL/api/reports/$PROJECT/$VERSION"
           curl -X PUT \
             "$URL" \
             -H "Content-Type: application/json" \
