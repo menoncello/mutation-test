@@ -10,59 +10,83 @@ on:
       - opened
       - synchronize
       - reopened
+  push:
+    branches:
+      - main
+      - develop
+      - release/**
 
 permissions:
   contents: read
 
-# Skip this workflow for automated version bump PRs
+# Skip this workflow for automated version bump PRs or commits from github-actions
 jobs:
-  check-labels:
-    name: Check PR Labels
+  check-skip-conditions:
+    name: Check Skip Conditions
     runs-on: ubuntu-latest
     outputs:
-      should_skip: ${{ steps.check-labels.outputs.should_skip }}
+      should_skip: ${{ steps.check-conditions.outputs.should_skip }}
     env:
       DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
     steps:
-      - name: Check for no-deploy label
-        id: check-labels
+      - name: Check commit author and PR labels
+        id: check-conditions
         run: |
-          echo "Checking for no-deploy label on PR #${{ github.event.pull_request.number }}"
+          # Default to not skipping
+          SHOULD_SKIP="false"
 
-          # Get PR labels
-          LABELS=$(curl -s -H "Authorization: token $DEPLOY_KEY" \
-            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels" \
-            | jq -r '.[].name')
-
-          # Check if no-deploy label exists
-          if echo "$LABELS" | grep -q "no-deploy"; then
-            echo "PR has no-deploy label, skipping workflow"
-            echo "should_skip=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "PR does not have no-deploy label, continuing workflow"
-            echo "should_skip=false" >> "$GITHUB_OUTPUT"
+          # Check if this is a push event
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            # Get the commit author
+            AUTHOR=$(curl -s -H "Authorization: token $DEPLOY_KEY" \
+              "https://api.github.com/repos/${{ github.repository }}/commits/${{ github.sha }}" \
+              | jq -r '.commit.author.name')
+            
+            echo "Commit author: $AUTHOR"
+            
+            # Skip if commit is from github-actions
+            if [[ "$AUTHOR" == "github-actions" ]]; then
+              echo "Commit is from github-actions, skipping workflow"
+              SHOULD_SKIP="true"
+            fi
+          # Check PR labels if this is a PR event
+          elif [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.pull_request.number }}" != "" ]]; then
+            echo "Checking for no-deploy label on PR #${{ github.event.pull_request.number }}"
+            
+            # Get PR labels
+            LABELS=$(curl -s -H "Authorization: token $DEPLOY_KEY" \
+              "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels" \
+              | jq -r '.[].name')
+            
+            # Check if no-deploy label exists
+            if echo "$LABELS" | grep -q "no-deploy"; then
+              echo "PR has no-deploy label, skipping workflow"
+              SHOULD_SKIP="true"
+            fi
           fi
+
+          echo "should_skip=$SHOULD_SKIP" >> "$GITHUB_OUTPUT"
 
   test-typescript:
     name: TypeScript Tests
-    needs: check-labels
-    if: needs.check-labels.outputs.should_skip != 'true'
+    needs: check-skip-conditions
+    if: needs.check-skip-conditions.outputs.should_skip != 'true'
     uses: ./.github/workflows/typescript-test.yaml
 
   lint:
     name: Lint Code
-    needs: check-labels
-    if: needs.check-labels.outputs.should_skip != 'true'
+    needs: check-skip-conditions
+    if: needs.check-skip-conditions.outputs.should_skip != 'true'
     uses: ./.github/workflows/lint.yaml
 
   check-dist:
     name: Check dist
-    needs: check-labels
-    if: needs.check-labels.outputs.should_skip != 'true'
+    needs: check-skip-conditions
+    if: needs.check-skip-conditions.outputs.should_skip != 'true'
     uses: ./.github/workflows/check-dist.yaml
 
   test-action:
     name: Mutation Test
-    needs: check-labels
-    if: needs.check-labels.outputs.should_skip != 'true'
+    needs: check-skip-conditions
+    if: needs.check-skip-conditions.outputs.should_skip != 'true'
     uses: ./.github/workflows/mutation-test.yaml
